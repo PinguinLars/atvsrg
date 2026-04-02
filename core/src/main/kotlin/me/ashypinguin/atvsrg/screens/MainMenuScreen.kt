@@ -1,11 +1,14 @@
 package me.ashypinguin.atvsrg.screens
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Align
 import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
 import me.ashypinguin.atvsrg.AtVsrGame
+import me.ashypinguin.atvsrg.exit
 import me.ashypinguin.atvsrg.withBatch
+import kotlin.system.exitProcess
 
 class MainMenuScreen(game: AtVsrGame) : AbstractScreen(game) {
   private val image = Texture("logo.png".toInternalFile(), true).apply {
@@ -30,6 +33,10 @@ class MainMenuScreen(game: AtVsrGame) : AbstractScreen(game) {
         false
       )
     }
+
+    if (Gdx.input.isTouched) {
+      game.exit()
+    }
   }
 
   override fun resize(width: Int, height: Int) {
@@ -38,5 +45,6 @@ class MainMenuScreen(game: AtVsrGame) : AbstractScreen(game) {
 
   override fun dispose() {
     image.disposeSafely()
+    super.dispose()
   }
 }
