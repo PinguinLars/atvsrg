@@ -9,4 +9,11 @@ import me.ashypinguin.atvsrg.AtVsrGame
  *
  * @property game the main game instance that can be used to access shared recourses
  */
-abstract class AbstractScreen(protected val game: AtVsrGame) : KtxScreen
+abstract class AbstractScreen(protected val game: AtVsrGame) : KtxScreen {
+  /**
+   * Overridden version of [KtxScreen.resize] to make sure the viewport gets update.
+   *
+   * This is here to make sure it gets applied to every class.
+   */
+  override fun resize(width: Int, height: Int) = game.viewport.update(width, height, true)
+}
