@@ -1,4 +1,4 @@
-package me.ashypinguin.atvsrg
+package me.ashypinguin.atvsrg.screens
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -7,8 +7,9 @@ import ktx.app.clearScreen
 import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
 import ktx.graphics.use
+import me.ashypinguin.atvsrg.AtVsrGame
 
-class FirstScreen : KtxScreen {
+class MainMenuScreen(game: AtVsrGame) : AbstractScreen(game) {
   private val image = Texture("logo.png".toInternalFile(), true).apply { setFilter(
       Texture.TextureFilter.Linear,
       Texture.TextureFilter.Linear
