@@ -1,21 +1,11 @@
 package me.ashypinguin.atvsrg.screens
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.utils.Align
-import ktx.assets.disposeSafely
-import ktx.assets.toInternalFile
 import me.ashypinguin.atvsrg.AtVsrGame
 import me.ashypinguin.atvsrg.withBatch
 
 class MainMenuScreen(game: AtVsrGame) : AbstractScreen(game) {
-  private val image = Texture("logo.png".toInternalFile(), true).apply {
-    setFilter(
-      Texture.TextureFilter.Linear,
-      Texture.TextureFilter.Linear
-    )
-  }
-
   override fun render(delta: Float) {
     game.viewport.apply()
     game.batch.projectionMatrix = game.viewport.camera.combined
@@ -38,10 +28,5 @@ class MainMenuScreen(game: AtVsrGame) : AbstractScreen(game) {
       game.removeScreen<MainMenuScreen>()
       dispose()
     }
-  }
-
-  override fun dispose() {
-    image.disposeSafely()
-    super.dispose()
   }
 }
