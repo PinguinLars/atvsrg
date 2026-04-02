@@ -1,11 +1,11 @@
 package me.ashypinguin.atvsrg.screens
 
 import com.badlogic.gdx.graphics.Texture
-import ktx.app.clearScreen
+import com.badlogic.gdx.utils.Align
 import ktx.assets.disposeSafely
 import ktx.assets.toInternalFile
-import ktx.graphics.use
 import me.ashypinguin.atvsrg.AtVsrGame
+import me.ashypinguin.atvsrg.withBatch
 
 class MainMenuScreen(game: AtVsrGame) : AbstractScreen(game) {
   private val image = Texture("logo.png".toInternalFile(), true).apply {
@@ -16,10 +16,24 @@ class MainMenuScreen(game: AtVsrGame) : AbstractScreen(game) {
   }
 
   override fun render(delta: Float) {
-    clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
-    game.batch.use {
-      it.draw(image, 100f, 160f)
+    game.viewport.apply()
+    game.batch.projectionMatrix = game.viewport.camera.combined
+
+    game.withBatch {
+      it.font.draw(
+        this,
+        "Welcome by @vsrg!!\nPress anywhere to start",
+        0f,
+        it.viewport.worldHeight * .9f,
+        it.viewport.worldWidth,
+        Align.center,
+        false
+      )
     }
+  }
+
+  override fun resize(width: Int, height: Int) {
+    game.viewport.update(width, height, true)
   }
 
   override fun dispose() {
