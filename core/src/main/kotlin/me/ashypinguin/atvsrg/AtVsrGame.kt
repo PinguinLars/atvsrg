@@ -13,7 +13,7 @@ import me.ashypinguin.atvsrg.screens.MainMenuScreen
 /**
  * The main game instance.
  *
- * DO NOT CALL MANUALLY
+ * # DO NOT CALL MANUALLY
  */
 class AtVsrGame : KtxGame<AbstractScreen>() {
 
