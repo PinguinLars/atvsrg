@@ -6,13 +6,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import kotlin.system.exitProcess
 
 /**
- * Start a [SpriteBatch] render with the [game][AtVsrGame] instance.
+ * Start a [SpriteBatch] render with the [game][Atvsrg] instance.
  *
- * @receiver the main [game][AtVsrGame] instance
+ * @receiver the main [game][Atvsrg] instance
  * @param scope Function block that gets called between [SpriteBatch.begin] and [SpriteBatch.end]
  * @see ktx.graphics.use
  */
-fun AtVsrGame.withBatch(scope: SpriteBatch.(AtVsrGame) -> Unit) {
+fun Atvsrg.withBatch(scope: SpriteBatch.(Atvsrg) -> Unit) {
   batch.begin()
   batch.scope(this)
   batch.end()
@@ -24,7 +24,7 @@ fun AtVsrGame.withBatch(scope: SpriteBatch.(AtVsrGame) -> Unit) {
  * @return Nothing, because it shouldn't return instead it exits the whole game
  * @see exitProcess
  */
-fun AtVsrGame.exit(status: Int = 0): Nothing {
+fun Atvsrg.exit(status: Int = 0): Nothing {
   dispose()
   exitProcess(status)
 }

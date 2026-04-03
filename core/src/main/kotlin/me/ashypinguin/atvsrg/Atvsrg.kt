@@ -15,7 +15,7 @@ import me.ashypinguin.atvsrg.screens.MainMenuScreen
  *
  * # DO NOT CALL MANUALLY
  */
-class AtVsrGame : KtxGame<AbstractScreen>() {
+class Atvsrg : KtxGame<AbstractScreen>() {
 
   /** Share sprite batch */
   val batch by lazy { SpriteBatch() }

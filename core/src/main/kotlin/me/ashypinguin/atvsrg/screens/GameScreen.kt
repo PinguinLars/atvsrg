@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.utils.Align
 import me.ashypinguin.atvsrg.withBatch
-import me.ashypinguin.atvsrg.AtVsrGame
+import me.ashypinguin.atvsrg.Atvsrg
 import me.ashypinguin.atvsrg.exit
 import me.ashypinguin.atvsrg.maps.BeatMap
 
-class GameScreen(game: AtVsrGame, /* Temporary */ map: BeatMap? = null) : AbstractScreen(game) {
+class GameScreen(game: Atvsrg, /* Temporary */ map: BeatMap? = null) : AbstractScreen(game) {
   var lastPressedKey = ' '
 
   override fun render(delta: Float) {
