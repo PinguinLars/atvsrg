@@ -27,4 +27,6 @@ abstract class AbstractScreen(protected val game: Atvsrg) : KtxScreen {
    * Easily log dispose events
    */
   override fun dispose() = log.debug { "Disposing ${javaClass.simpleName}" }
+
+  override fun show() = log.debug { "Showing ${javaClass.simpleName}" }
 }

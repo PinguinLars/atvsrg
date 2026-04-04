@@ -65,8 +65,6 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
   }
 
   override fun dispose() {
-    log.debug { "NOTE_WALL_OFFSET = $NOTE_WALL_OFFSET_PERCENT" }
-    log.debug { "NOTE_WIDTH_PRECENT = $NOTE_WIDTH_PRECENT" }
     map?.dispose()
     super.dispose()
   }
