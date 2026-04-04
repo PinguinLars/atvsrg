@@ -14,6 +14,8 @@ import me.ashypinguin.atvsrg.screens.MainMenuScreen
 
 private val log = logger<Atvsrg>()
 
+const val GRAY_BG_TONE = .3f
+
 /**
  * The main game instance.
  *
