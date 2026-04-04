@@ -8,7 +8,7 @@ import me.ashypinguin.atvsrg.Atvsrg
 import me.ashypinguin.atvsrg.exit
 import me.ashypinguin.atvsrg.maps.BeatMap
 
-class GameScreen(game: Atvsrg, /* Temporary */ map: BeatMap? = null) : AbstractScreen(game) {
+class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : AbstractScreen(game) {
   var lastPressedKey = ' '
 
   override fun render(delta: Float) {
@@ -27,4 +27,6 @@ class GameScreen(game: Atvsrg, /* Temporary */ map: BeatMap? = null) : AbstractS
       Gdx.input.isKeyPressed(Input.Keys.Q) -> game.exit()
     }
   }
+
+  override fun dispose() = map?.dispose() ?: Unit
 }
