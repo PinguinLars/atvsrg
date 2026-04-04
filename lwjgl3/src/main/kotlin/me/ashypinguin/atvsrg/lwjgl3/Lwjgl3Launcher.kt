@@ -31,8 +31,9 @@ fun main() {
 
   val config = Lwjgl3ApplicationConfiguration().apply {
     setTitle("atvsrg")
-    useVsync(true)
-    setForegroundFPS(getDisplayMode().refreshRate + 1)
+    // we want alot of fps as possible for minimal latency, but too much causes instabiltity for some reason
+    useVsync(false)
+    setForegroundFPS(getDisplayMode().refreshRate * 8)
     setWindowedMode(640, 480)
     setWindowIcon(*(arrayOf(128, 64, 32, 16).map { "libgdx$it.png" }.toTypedArray()))
   }

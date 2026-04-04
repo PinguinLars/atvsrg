@@ -16,7 +16,7 @@ import kotlin.system.exitProcess
  * @see ktx.graphics.use
  * @see withRenderer
  */
-fun Atvsrg.withBatch(scope: SpriteBatch.(Atvsrg) -> Unit) {
+inline fun Atvsrg.withBatch(scope: SpriteBatch.(Atvsrg) -> Unit) {
   batch.begin()
   batch.scope(this)
   batch.end()
@@ -31,7 +31,7 @@ fun Atvsrg.withBatch(scope: SpriteBatch.(Atvsrg) -> Unit) {
  * @see ktx.graphics.use
  * @see withBatch
  */
-fun Atvsrg.withRenderer(type: ShapeRenderer.ShapeType? = null, scope: ShapeRenderer.(Atvsrg) -> Unit) {
+inline fun Atvsrg.withRenderer(type: ShapeRenderer.ShapeType? = null, scope: ShapeRenderer.(Atvsrg) -> Unit) {
   if (type != null) renderer.begin(type) else renderer.end()
   renderer.scope(this)
   renderer.end()
