@@ -4,7 +4,7 @@ buildscript {
   }
   dependencies {
     classpath "io.github.fourlastor:construo:2.1.0"
-    if (enableGraalNative == 'true') {
+    if (enableGraalNative == "true") {
       classpath "org.graalvm.buildtools.native:org.graalvm.buildtools.native.gradle.plugin:0.9.28"
     }
   }
@@ -12,53 +12,42 @@ buildscript {
 plugins {
   id "application"
 }
-apply plugin: 'io.github.fourlastor.construo'
-apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: "io.github.fourlastor.construo"
+apply plugin: "org.jetbrains.kotlin.jvm"
 
 
 import io.github.fourlastor.construo.Target
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-sourceSets.main.resources.srcDirs += [rootProject.file('assets').path]
-application.mainClass = 'me.ashypinguin.atvsrg.lwjgl3.Lwjgl3Launcher'
+sourceSets.main.resources.srcDirs += [rootProject.file("assets").path]
+application.mainClass = "me.ashypinguin.atvsrg.lwjgl3.Lwjgl3Launcher"
 application.applicationName = appName
-eclipse.project.name = appName + '-lwjgl3'
+eclipse.project.name = appName + "-lwjgl3"
 java.sourceCompatibility = 21
 java.targetCompatibility = 21
-if (JavaVersion.current().isJava9Compatible()) {
-  compileJava.options.release.set(21)
-}
-kotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+if (JavaVersion.current().isJava9Compatible()) compileJava.options.release.set(21)
+kotlin.compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
 
 dependencies {
-  implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-  implementation "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-  implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-  implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-  implementation project(':core')
+  implementation(libs.gdx.lwjgl3)
+  implementation(variantOf(libs.gdx.box2d.platform) { classifier("natives-desktop") })
+  implementation(variantOf(libs.gdx.freetype.platform) { classifier("natives-desktop") })
+  implementation(variantOf(libs.gdx.platform) { classifier("natives-desktop") })
+  implementation(project(":core"))
 
-  if (enableGraalNative == 'true') {
-    implementation "io.github.berstanio:gdx-svmhelper-backend-lwjgl3:$graalHelperVersion"
-
-  }
+  if (enableGraalNative == "true") implementation libs.graal.helper.lwjgl3
   // Forces LWJGL3 to use at least $lwjgl3Version, currently 3.4.1, to avoid problems on Java 25 and up.
-  constraints {
-    implementation("org.lwjgl:lwjgl:$lwjgl3Version")
-    implementation("org.lwjgl:lwjgl-glfw:$lwjgl3Version")
-    implementation("org.lwjgl:lwjgl-jemalloc:$lwjgl3Version")
-    implementation("org.lwjgl:lwjgl-openal:$lwjgl3Version")
-    implementation("org.lwjgl:lwjgl-opengl:$lwjgl3Version")
-    implementation("org.lwjgl:lwjgl-stb:$lwjgl3Version")
-  }
+  constraints {implementation(libs.bundles.lwjgl) }
 }
 
-def os = System.properties['os.name'].toLowerCase(Locale.ROOT)
+def os = System.properties["os.name"].toLowerCase(Locale.ROOT)
 
 run {
-  workingDir = rootProject.file('assets').path
+  workingDir = rootProject.file("assets").path
 // You can uncomment the next line if your IDE claims a build failure even when the app closed properly.
   //setIgnoreExitValue(true)
   jvmArgs += "--enable-native-access=ALL-UNNAMED"
-  if (os.contains('mac')) jvmArgs += "-XstartOnFirstThread"
+  if (os.contains("mac")) jvmArgs += "-XstartOnFirstThread"
 }
 
 jar {
@@ -69,15 +58,15 @@ jar {
   dependsOn configurations.runtimeClasspath
   from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
 // these "exclude" lines remove some unnecessary duplicate files in the output JAR.
-  exclude('META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
+  exclude("META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
   dependencies {
-    exclude('META-INF/INDEX.LIST', 'META-INF/maven/**')
+    exclude("META-INF/INDEX.LIST", "META-INF/maven/**")
   }
 // setting the manifest makes the JAR runnable.
 // enabling native access helps avoid a warning when Java 24 or later runs the JAR.
 // setting Multi-Release to true allows LWJGL3 to use different classes on recent Java versions.
   manifest {
-    attributes 'Main-Class': application.mainClass, 'Enable-Native-Access': 'ALL-UNNAMED', 'Multi-Release': 'true'
+    attributes "Main-Class": application.mainClass, "Enable-Native-Access": "ALL-UNNAMED", "Multi-Release": "true"
   }
 // this last step may help on some OSes that need extra instruction to make runnable JARs.
   doLast {
@@ -92,10 +81,10 @@ tasks.register("jarMac") {
   group("build")
   jar.archiveFileName.set("${appName}-${projectVersion}-mac.jar")
   jar.exclude("windows/x86/**", "windows/x64/**", "linux/arm32/**", "linux/arm64/**", "linux/x64/**", "**/*.dll", "**/*.so",
-    'META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
+    "META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
   dependencies {
     jar.exclude("windows/x86/**", "windows/x64/**", "linux/arm32/**", "linux/arm64/**", "linux/x64/**",
-      'META-INF/INDEX.LIST', 'META-INF/maven/**')
+      "META-INF/INDEX.LIST", "META-INF/maven/**")
   }
 }
 
@@ -106,10 +95,10 @@ tasks.register("jarLinux") {
   group("build")
   jar.archiveFileName.set("${appName}-${projectVersion}-linux.jar")
   jar.exclude("windows/x86/**", "windows/x64/**", "macos/arm64/**", "macos/x64/**", "**/*.dll", "**/*.dylib",
-    'META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
+    "META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
   dependencies {
     jar.exclude("windows/x86/**", "windows/x64/**", "macos/arm64/**", "macos/x64/**",
-      'META-INF/INDEX.LIST', 'META-INF/maven/**')
+      "META-INF/INDEX.LIST", "META-INF/maven/**")
   }
 }
 
@@ -120,10 +109,10 @@ tasks.register("jarWin") {
   group("build")
   jar.archiveFileName.set("${appName}-${projectVersion}-win.jar")
   jar.exclude("macos/arm64/**", "macos/x64/**", "linux/arm32/**", "linux/arm64/**", "linux/x64/**", "**/*.dylib", "**/*.so",
-    'META-INF/INDEX.LIST', 'META-INF/*.SF', 'META-INF/*.DSA', 'META-INF/*.RSA')
+    "META-INF/INDEX.LIST", "META-INF/*.SF", "META-INF/*.DSA", "META-INF/*.RSA")
   dependencies {
     jar.exclude("macos/arm64/**", "macos/x64/**", "linux/arm32/**", "linux/arm64/**", "linux/x64/**",
-      'META-INF/INDEX.LIST', 'META-INF/maven/**')
+      "META-INF/INDEX.LIST", "META-INF/maven/**")
   }
 }
 
@@ -172,14 +161,14 @@ construo {
 }
 
 // Equivalent to the jar task; here for compatibility with gdx-setup.
-tasks.register('dist') {
-  dependsOn 'jar'
+tasks.register("dist") {
+  dependsOn "jar"
 }
 
 distributions {
   main {
     contents {
-      into('libs') {
+      into("libs") {
         project.configurations.runtimeClasspath.files.findAll { file ->
           file.getName() != project.tasks.jar.outputs.files.singleFile.name
         }.each { file ->
@@ -190,9 +179,7 @@ distributions {
   }
 }
 
-startScripts.dependsOn(':lwjgl3:jar')
+startScripts.dependsOn(":lwjgl3:jar")
 startScripts.classpath = project.tasks.jar.outputs.files
 
-if (enableGraalNative == 'true') {
-  apply from: file("nativeimage.gradle")
-}
+if (enableGraalNative == "true") apply from: file("nativeimage.gradle")

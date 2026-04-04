@@ -7,7 +7,7 @@ project(":lwjgl3") {
         imageName = appName
         mainClass = application.mainClass
         requiredVersion = '23.0'
-        buildArgs.add("-march=compatibility")
+        buildArgs.add("-march=compatibility") // change to -march=native if you're selfish
         jvmArgs.addAll("-Dfile.encoding=UTF8")
         sharedLibrary = false
         resources.autodetect()
