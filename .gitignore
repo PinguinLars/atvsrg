@@ -58,6 +58,7 @@ www-test/
 
 ## IntelliJ, Android Studio:
 .idea/
+!.idea/dictionaries
 *.ipr
 *.iws
 *.iml
