@@ -1,46 +1,73 @@
 package me.ashypinguin.atvsrg.screens
 
-import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Gdx.input
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.utils.Align
-import me.ashypinguin.atvsrg.Atvsrg
-import me.ashypinguin.atvsrg.exit
-import me.ashypinguin.atvsrg.logger
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import ktx.app.clearScreen
+import me.ashypinguin.atvsrg.*
 import me.ashypinguin.atvsrg.maps.BeatMap
-import me.ashypinguin.atvsrg.withBatch
 
 private val log = logger<GameScreen>()
+private const val NOTE_WIDTH_PRECENT = .15f
+
+/**
+ * The space between the walls and the first and last note.
+ *
+ * It is half of the remaining percent of 4 times [NOTE_WIDTH_PRECENT]
+ */
+private const val NOTE_WALL_OFFSET_PERCENT = (1f - NOTE_WIDTH_PRECENT * 4) * .5f
+private const val NOTE_GROUND_OFFSET_PERCENT = .05f
+private const val GRAY_BG_TONE = .3f
 
 class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : AbstractScreen(game) {
-  var lastPressedKey = ' '
-
   override fun render(delta: Float) {
+    clearScreen(GRAY_BG_TONE, GRAY_BG_TONE, GRAY_BG_TONE)
     game.viewport.apply()
     game.batch.projectionMatrix = game.viewport.camera.combined
+    game.renderer.projectionMatrix = game.viewport.camera.combined
 
-    game.withBatch {
-      it.font.draw(
-        this,
-        "Last key: $lastPressedKey",
-        0f,
-        it.viewport.worldHeight * .9f,
-        it.viewport.worldWidth,
-        Align.center,
-        false
+    game.withRenderer(ShapeRenderer.ShapeType.Filled) {
+      //Make drawable screen black
+      color = Color.BLACK
+      rect(0f, 0f, it.viewport.worldWidth, it.viewport.worldHeight)
+
+      color = if (input.isKeyPressed(Input.Keys.D)) Color.YELLOW else Color.YELLOW.dull()
+      rect(
+        it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+        it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight * .1f
       )
-    }
-
-    when {
-      Gdx.input.isKeyPressed(Input.Keys.D) -> lastPressedKey = 'd'
-      Gdx.input.isKeyPressed(Input.Keys.F) -> lastPressedKey = 'f'
-      Gdx.input.isKeyPressed(Input.Keys.J) -> lastPressedKey = 'j'
-      Gdx.input.isKeyPressed(Input.Keys.K) -> lastPressedKey = 'k'
-      Gdx.input.isKeyPressed(Input.Keys.Q) -> game.exit()
+      color = if (input.isKeyPressed(Input.Keys.F)) Color.ORANGE else Color.ORANGE.dull()
+      rect(
+        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT + NOTE_WALL_OFFSET_PERCENT),
+        it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight * .1f
+      )
+      color = if (input.isKeyPressed(Input.Keys.J)) Color.RED else Color.RED.dull()
+      rect(
+        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 2+ NOTE_WALL_OFFSET_PERCENT),
+        it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight * .1f
+      )
+      color = if (input.isKeyPressed(Input.Keys.K)) Color.PURPLE else Color.PURPLE.dull()
+      rect(
+        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 3+ NOTE_WALL_OFFSET_PERCENT),
+        it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight * .1f
+      )
+      if (input.isKeyPressed(Input.Keys.Q)) game.exit()
     }
   }
 
   override fun dispose() {
-    super.dispose()
+    log.debug { "NOTE_WALL_OFFSET = $NOTE_WALL_OFFSET_PERCENT" }
+    log.debug { "NOTE_WIDTH_PRECENT = $NOTE_WIDTH_PRECENT" }
     map?.dispose()
+    super.dispose()
   }
 }

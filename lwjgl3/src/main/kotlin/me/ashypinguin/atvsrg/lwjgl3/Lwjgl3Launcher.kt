@@ -1,4 +1,5 @@
 @file:JvmName("Lwjgl3Launcher")
+@file:Suppress("SpellCheckingInspection")
 
 package me.ashypinguin.atvsrg.lwjgl3
 
@@ -8,7 +9,6 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration.getDisplayMode
 import me.ashypinguin.atvsrg.Atvsrg
 
-@Suppress("SpellCheckingInspection")
 private const val LOG_ENV = "ATVSRG_LOG"
 
 /** Launches the desktop (LWJGL3) application. */

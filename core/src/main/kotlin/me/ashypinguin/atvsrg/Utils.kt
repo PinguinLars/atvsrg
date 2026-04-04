@@ -3,20 +3,38 @@
 package me.ashypinguin.atvsrg
 
 import com.badlogic.gdx.Application
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import kotlin.system.exitProcess
 
 /**
  * Start a [SpriteBatch] render with the [game][Atvsrg] instance.
  *
- * @receiver the main [game][Atvsrg] instance
+ * @receiver The main [game][Atvsrg] instance
  * @param scope Function block that gets called between [SpriteBatch.begin] and [SpriteBatch.end]
  * @see ktx.graphics.use
+ * @see withRenderer
  */
 fun Atvsrg.withBatch(scope: SpriteBatch.(Atvsrg) -> Unit) {
   batch.begin()
   batch.scope(this)
   batch.end()
+}
+
+/**
+ * Start a [ShapeRenderer]
+ *
+ * @receiver The main [game][Atvsrg] instance
+ * @param scope Function block that gets called between [ShapeRenderer.begin] and [ShapeRenderer.end]
+ * @param type The [type][ShapeRenderer.ShapeType] the [ShapeRenderer] uses. (Optional defaults to whatever upstreams defaults to.)
+ * @see ktx.graphics.use
+ * @see withBatch
+ */
+fun Atvsrg.withRenderer(type: ShapeRenderer.ShapeType? = null, scope: ShapeRenderer.(Atvsrg) -> Unit) {
+  if (type != null) renderer.begin(type) else renderer.end()
+  renderer.scope(this)
+  renderer.end()
 }
 
 /**
@@ -43,3 +61,10 @@ fun Int.toLogLevel(): String = when (this) {
   Application.LOG_NONE -> "none"
   else -> throw IllegalStateException("LogLevel has an illegal value of $this. This should have been thrown by libGDX")
 }
+
+/**
+ * Dulls a color.
+ * @receiver The color to dull. (Does **not** get modified)
+ * @return A new duller color.
+ */
+fun Color.dull() : Color = this.cpy().lerp(Color.DARK_GRAY, 0.5f)

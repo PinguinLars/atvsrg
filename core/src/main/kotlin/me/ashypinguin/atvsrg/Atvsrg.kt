@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxGame
 import ktx.assets.toInternalFile
@@ -20,8 +21,10 @@ private val log = logger<Atvsrg>()
  */
 class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
 
-  /** Share sprite batch */
+  /** Shared sprite batch */
   val batch by lazy { SpriteBatch() }
+  /** Shared shape render */
+  val renderer by lazy { ShapeRenderer() }
 
   /** Default arial font used by LIBgdx */
   val font by lazy {
@@ -61,6 +64,7 @@ class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
    */
   override fun dispose() {
     batch.dispose()
+    renderer.dispose()
     font.dispose()
     super.dispose()
     log.info { "Exiting" }
