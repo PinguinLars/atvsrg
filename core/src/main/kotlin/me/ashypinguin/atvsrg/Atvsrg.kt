@@ -45,7 +45,7 @@ class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
   }
 
   /** Viewport of the game */
-  val viewport by lazy { FitViewport(800f, 480f) }
+  val viewport by lazy { FitViewport(640f, 360f) }
 
   /**
    * Main entrypoint of the game.

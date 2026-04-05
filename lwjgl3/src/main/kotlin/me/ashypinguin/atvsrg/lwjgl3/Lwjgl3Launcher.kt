@@ -34,7 +34,7 @@ fun main() {
     // we want alot of fps as possible for minimal latency, but too much causes instabiltity for some reason
     useVsync(false)
     setForegroundFPS(getDisplayMode().refreshRate * 8)
-    setWindowedMode(640, 480)
+    setWindowedMode(640, 360)
     setWindowIcon(*(arrayOf(128, 64, 32, 16).map { "libgdx$it.png" }.toTypedArray()))
   }
 
