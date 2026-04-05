@@ -1,3 +1,4 @@
+//TODO: migrate to kotlin
 project(":lwjgl3") {
   apply plugin: "org.graalvm.buildtools.native"
 
