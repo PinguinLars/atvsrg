@@ -20,6 +20,9 @@ private const val NOTE_HEIGHT_PRECENT = .05f
  */
 private const val NOTE_WALL_OFFSET_PERCENT = (1f - NOTE_WIDTH_PRECENT * 4) * .5f
 private const val NOTE_GROUND_OFFSET_PERCENT = NOTE_HEIGHT_PRECENT * .5f
+private const val KEY_UNPRESSED_DARKNESS = .5f
+private const val COLUMN_DARKNESS = .7f
+private const val NOTE_DARKNESS = .3f
 
 class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : AbstractScreen(game) {
   /** The time since that the fps last got updated in seconds */
@@ -45,29 +48,59 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
       color = Color.BLACK
       rect(0f, 0f, it.viewport.worldWidth, it.viewport.worldHeight)
 
+      //Columns
+      color = Color.YELLOW.dull(COLUMN_DARKNESS)
+      rect(
+        it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+        0f,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight
+      )
+      color = Color.ORANGE.dull(COLUMN_DARKNESS)
+      rect(
+        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT + NOTE_WALL_OFFSET_PERCENT),
+        0f,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight
+      )
+      color = Color.RED.dull(COLUMN_DARKNESS)
+      rect(
+        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 2 + NOTE_WALL_OFFSET_PERCENT),
+        0f,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight
+      )
+      color = Color.PURPLE.dull(COLUMN_DARKNESS)
+      rect(
+        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 3 + NOTE_WALL_OFFSET_PERCENT),
+        0f,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight
+      )
+
       //Keys
-      color = if (input.isKeyPressed(Keys.D)) Color.YELLOW else Color.YELLOW.dull()
+      color = if (input.isKeyPressed(Keys.D)) Color.YELLOW else Color.YELLOW.dull(KEY_UNPRESSED_DARKNESS)
       rect(
         it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
         it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
       )
-      color = if (input.isKeyPressed(Keys.F)) Color.ORANGE else Color.ORANGE.dull()
+      color = if (input.isKeyPressed(Keys.F)) Color.ORANGE else Color.ORANGE.dull(KEY_UNPRESSED_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT + NOTE_WALL_OFFSET_PERCENT),
         it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
       )
-      color = if (input.isKeyPressed(Keys.J)) Color.RED else Color.RED.dull()
+      color = if (input.isKeyPressed(Keys.J)) Color.RED else Color.RED.dull(KEY_UNPRESSED_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 2 + NOTE_WALL_OFFSET_PERCENT),
         it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
       )
-      color = if (input.isKeyPressed(Keys.K)) Color.PURPLE else Color.PURPLE.dull()
+      color = if (input.isKeyPressed(Keys.K)) Color.PURPLE else Color.PURPLE.dull(KEY_UNPRESSED_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 3 + NOTE_WALL_OFFSET_PERCENT),
         it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
@@ -75,10 +108,19 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
         it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
       )
 
+      //Test note
+      color = Color.YELLOW.dull(NOTE_DARKNESS)
+      rect(
+        it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+        it.viewport.worldHeight * .6f,
+        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+        it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+      )
+
       fpsCounter(it.viewport)
     }
 
-    game.withBatch { fpsCounter(fps, it.viewport, it.font) }
+    game.withBatch { fpsCounter(fps, it.viewport, it.fpsFont) }
 
     if (input.isKeyPressed(Keys.Q)) game.exit()
   }

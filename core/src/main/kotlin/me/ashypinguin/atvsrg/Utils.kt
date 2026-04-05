@@ -3,6 +3,7 @@
 package me.ashypinguin.atvsrg
 
 import com.badlogic.gdx.Application
+import ktx.log.error
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -44,6 +45,7 @@ inline fun Atvsrg.withRenderer(type: ShapeRenderer.ShapeType? = null, scope: Sha
  * @see exitProcess
  */
 fun Atvsrg.exit(status: Int = 0): Nothing {
+  if (status != 0 ) error { "Manual exit triggered with status: $status." }
   dispose()
   exitProcess(status)
 }
@@ -67,4 +69,4 @@ fun Int.toLogLevel(): String = when (this) {
  * @receiver The color to dull. (Does **not** get modified)
  * @return A new duller color.
  */
-fun Color.dull() : Color = this.cpy().lerp(Color.DARK_GRAY, 0.5f)
+fun Color.dull(t: Float): Color = this.cpy().lerp(Color.DARK_GRAY, t)
