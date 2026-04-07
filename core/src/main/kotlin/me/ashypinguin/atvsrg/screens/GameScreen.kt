@@ -24,6 +24,11 @@ private const val KEY_UNPRESSED_DARKNESS = .5f
 private const val COLUMN_DARKNESS = .7f
 private const val NOTE_DARKNESS = .3f
 
+private val LEFT_COLOR = Color.YELLOW
+private val LEFT_MID_COLOR = Color.ORANGE
+private val RIGHT_MID_COLOR = Color.RED
+private val RIGHT_COLOR = Color.PURPLE
+
 class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : AbstractScreen(game) {
   /** The time since that the fps last got updated in seconds */
   private var timeSinceLastFpsUpdate = 1f
@@ -40,7 +45,7 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
       timeSinceLastFpsUpdate = 0f
       fps = (1 / delta).toInt()
       // delta also can be found with fps^-1 because fps is the inverse of delta and the inverse of an inverse is the original
-      log.debug() { "FPS: $fps, Delta: $delta" }
+      log.debug { "FPS: $fps, Delta: $delta" }
     }
 
     game.withRenderer(ShapeRenderer.ShapeType.Filled) {
@@ -49,28 +54,28 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
       rect(0f, 0f, it.viewport.worldWidth, it.viewport.worldHeight)
 
       //Columns
-      color = Color.YELLOW.dull(COLUMN_DARKNESS)
+      color = LEFT_COLOR.dull(COLUMN_DARKNESS)
       rect(
         it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
         0f,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight
       )
-      color = Color.ORANGE.dull(COLUMN_DARKNESS)
+      color = LEFT_MID_COLOR.dull(COLUMN_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT + NOTE_WALL_OFFSET_PERCENT),
         0f,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight
       )
-      color = Color.RED.dull(COLUMN_DARKNESS)
+      color = RIGHT_MID_COLOR.dull(COLUMN_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 2 + NOTE_WALL_OFFSET_PERCENT),
         0f,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight
       )
-      color = Color.PURPLE.dull(COLUMN_DARKNESS)
+      color = RIGHT_COLOR.dull(COLUMN_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 3 + NOTE_WALL_OFFSET_PERCENT),
         0f,
@@ -79,28 +84,28 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
       )
 
       //Keys
-      color = if (input.isKeyPressed(Keys.D)) Color.YELLOW else Color.YELLOW.dull(KEY_UNPRESSED_DARKNESS)
+      color = if (input.isKeyPressed(Keys.D)) LEFT_COLOR else LEFT_COLOR.dull(KEY_UNPRESSED_DARKNESS)
       rect(
         it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
         it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
       )
-      color = if (input.isKeyPressed(Keys.F)) Color.ORANGE else Color.ORANGE.dull(KEY_UNPRESSED_DARKNESS)
+      color = if (input.isKeyPressed(Keys.F)) LEFT_MID_COLOR else LEFT_MID_COLOR.dull(KEY_UNPRESSED_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT + NOTE_WALL_OFFSET_PERCENT),
         it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
       )
-      color = if (input.isKeyPressed(Keys.J)) Color.RED else Color.RED.dull(KEY_UNPRESSED_DARKNESS)
+      color = if (input.isKeyPressed(Keys.J)) RIGHT_MID_COLOR else RIGHT_MID_COLOR.dull(KEY_UNPRESSED_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 2 + NOTE_WALL_OFFSET_PERCENT),
         it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
         it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
         it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
       )
-      color = if (input.isKeyPressed(Keys.K)) Color.PURPLE else Color.PURPLE.dull(KEY_UNPRESSED_DARKNESS)
+      color = if (input.isKeyPressed(Keys.K)) RIGHT_COLOR else RIGHT_COLOR.dull(KEY_UNPRESSED_DARKNESS)
       rect(
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 3 + NOTE_WALL_OFFSET_PERCENT),
         it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
@@ -109,7 +114,7 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
       )
 
       //Test note
-      color = Color.YELLOW.dull(NOTE_DARKNESS)
+      color = LEFT_COLOR.dull(NOTE_DARKNESS)
       rect(
         it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
         it.viewport.worldHeight * .6f,
