@@ -2,6 +2,7 @@
 
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import io.github.fourlastor.construo.Target
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val enableGraalNative: String by project
 buildscript {
@@ -19,6 +20,8 @@ plugins {
   kotlin("jvm")
 }
 
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.compilerOptions { freeCompilerArgs.set(listOf("-Xexplicit-backing-fields")) }
 
 
 sourceSets.main {

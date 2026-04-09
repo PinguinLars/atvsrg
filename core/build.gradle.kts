@@ -1,4 +1,4 @@
-import org.gradle.kotlin.dsl.provideDelegate
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 tasks.withType<JavaCompile>().configureEach { options.encoding = "UTF-8" }
 eclipse.project.name = "atvsrg-core"
@@ -20,3 +20,5 @@ dependencies {
 tasks.jar {
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.compilerOptions { freeCompilerArgs.set(listOf("-Xexplicit-backing-fields")) }
