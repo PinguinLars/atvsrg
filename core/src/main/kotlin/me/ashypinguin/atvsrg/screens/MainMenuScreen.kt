@@ -5,11 +5,10 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import ktx.app.clearScreen
-import me.ashypinguin.atvsrg.Atvsrg
-import me.ashypinguin.atvsrg.GRAY_BG_TONE
+import me.ashypinguin.atvsrg.*
 import me.ashypinguin.atvsrg.maps.BeatMap
-import me.ashypinguin.atvsrg.withBatch
-import me.ashypinguin.atvsrg.withRenderer
+import me.ashypinguin.atvsrg.maps.BeatMapNote
+import me.ashypinguin.atvsrg.maps.BeatMapNotePosition
 
 class MainMenuScreen(game: Atvsrg) : AbstractScreen(game) {
   override fun render(delta: Float) {
@@ -36,7 +35,10 @@ class MainMenuScreen(game: Atvsrg) : AbstractScreen(game) {
     }
 
     if (Gdx.input.isTouched) {
-      val map = BeatMap(180)
+      val notes = listOf(
+        BeatMapNote(BeatMapNotePosition.LEFT_COLUMN, 8)
+      )
+      val map = BeatMap(180, 100_000_000, notes, "no-time-to-explain-by-goodkid.wav".toMusic())
       game.addScreen(GameScreen(game, map))
       game.setScreen<GameScreen>()
       game.removeScreen<MainMenuScreen>()

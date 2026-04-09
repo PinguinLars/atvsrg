@@ -24,7 +24,7 @@ private const val KEY_UNPRESSED_DARKNESS = .5f
 private const val COLUMN_DARKNESS = .7f
 private const val NOTE_DARKNESS = .3f
 
-private const val BEAT_BAR_BEAT_AMOUNT = 8
+private const val BEAT_SCROLL_SPEED = 8
 
 private val LEFT_COLOR = Color.YELLOW
 private val LEFT_MID_COLOR = Color.ORANGE
@@ -42,6 +42,12 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   private val beats
     get() = timeSinceStart * (map.bpm / 60)
   private var timeSinceStart = 0f
+
+  override fun show() {
+    map.song.isLooping = false
+    map.song.position = 0f
+    map.song.play()
+  }
 
   override fun render(delta: Float) {
     clear(GRAY_BG_TONE, GRAY_BG_TONE, GRAY_BG_TONE)
@@ -127,7 +133,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       color = Color.LIGHT_GRAY
       rect(
         it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
-        it.viewport.worldHeight * (1f - (beats % BEAT_BAR_BEAT_AMOUNT / BEAT_BAR_BEAT_AMOUNT)),
+        it.viewport.worldHeight * (1f - (beats % BEAT_SCROLL_SPEED / BEAT_SCROLL_SPEED)),
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 4f),
         it.viewport.worldHeight * .01f
       )
@@ -149,7 +155,11 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       fpsCounter(fps, it.viewport, it.fpsFont)
     }
 
-    if (input.isKeyPressed(Keys.Q)) game.exit()
+    if (timeSinceStart > map.length ||
+      map.song.position > map.length ||
+      !map.song.isPlaying ||
+      input.isKeyPressed(Keys.Q)
+    ) TODO("Make a end screen")
   }
 
   override fun dispose() {
