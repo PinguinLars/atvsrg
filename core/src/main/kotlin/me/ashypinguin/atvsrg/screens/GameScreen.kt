@@ -32,7 +32,7 @@ private val LEFT_MID_COLOR = Color.ORANGE
 private val RIGHT_MID_COLOR = Color.RED
 private val RIGHT_COLOR = Color.PURPLE
 
-private const val MUSIC_VOLUME = 0.5f
+private const val MUSIC_VOLUME = .4f
 
 class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   /** The time since that the fps last got updated in seconds */
@@ -114,34 +114,48 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       )
 
       //Keys
-      color = if (input.isKeyPressed(Keys.D)) LEFT_COLOR else LEFT_COLOR.dull(KEY_UNPRESSED_DARKNESS)
-      rect(
-        it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
-        it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
-        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-        it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
-      )
-      color = if (input.isKeyPressed(Keys.F)) LEFT_MID_COLOR else LEFT_MID_COLOR.dull(KEY_UNPRESSED_DARKNESS)
-      rect(
-        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT + NOTE_WALL_OFFSET_PERCENT),
-        it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
-        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-        it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
-      )
-      color = if (input.isKeyPressed(Keys.J)) RIGHT_MID_COLOR else RIGHT_MID_COLOR.dull(KEY_UNPRESSED_DARKNESS)
-      rect(
-        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 2 + NOTE_WALL_OFFSET_PERCENT),
-        it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
-        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-        it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
-      )
-      color = if (input.isKeyPressed(Keys.K)) RIGHT_COLOR else RIGHT_COLOR.dull(KEY_UNPRESSED_DARKNESS)
-      rect(
-        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 3 + NOTE_WALL_OFFSET_PERCENT),
-        it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
-        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-        it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
-      )
+      val lKey = input.isKeyPressed(Keys.D)
+      val lmKey = input.isKeyPressed(Keys.F)
+      val rmKey = input.isKeyPressed(Keys.J)
+      val rKey = input.isKeyPressed(Keys.K)
+
+      //Inactive keys
+      if (!lKey) {
+        color = LEFT_COLOR.dull(KEY_UNPRESSED_DARKNESS)
+        rect(
+          it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+          it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+          it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+          it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+        )
+      }
+      if (!lmKey) {
+        color = LEFT_MID_COLOR.dull(KEY_UNPRESSED_DARKNESS)
+        rect(
+          it.viewport.worldWidth * (NOTE_WIDTH_PRECENT + NOTE_WALL_OFFSET_PERCENT),
+          it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+          it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+          it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+        )
+      }
+      if (!rmKey) {
+        color = RIGHT_MID_COLOR.dull(KEY_UNPRESSED_DARKNESS)
+        rect(
+          it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 2 + NOTE_WALL_OFFSET_PERCENT),
+          it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+          it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+          it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+        )
+      }
+      if (!rKey) {
+        color = RIGHT_COLOR.dull(KEY_UNPRESSED_DARKNESS)
+        rect(
+          it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 3 + NOTE_WALL_OFFSET_PERCENT),
+          it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+          it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+          it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+        )
+      }
 
       //rhythm bar
       color = Color.LIGHT_GRAY
@@ -153,8 +167,8 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
         it.viewport.worldHeight * .01f
       )
 
+      //Notes
       with(map) {
-        //Notes
         for (i in lastValidIndex..<notes.size) {
           if (notes[i].beat > beat + BEAT_SCROLL_SPEED) break
           if (notes[i].beat >= beat) when (notes[i].pos) {
@@ -199,6 +213,43 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
             }
           } else lastValidIndex = i + 1
         }
+      }
+
+      if (lKey) {
+        color = LEFT_COLOR
+        rect(
+          it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+          it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+          it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+          it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+        )
+      }
+      if (lmKey) {
+        color = LEFT_MID_COLOR
+        rect(
+          it.viewport.worldWidth * (NOTE_WIDTH_PRECENT + NOTE_WALL_OFFSET_PERCENT),
+          it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+          it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+          it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+        )
+      }
+      if (rmKey) {
+        color = RIGHT_MID_COLOR
+        rect(
+          it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 2 + NOTE_WALL_OFFSET_PERCENT),
+          it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+          it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+          it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+        )
+      }
+      if (rKey) {
+        color = RIGHT_COLOR
+        rect(
+          it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 3 + NOTE_WALL_OFFSET_PERCENT),
+          it.viewport.worldHeight * NOTE_GROUND_OFFSET_PERCENT,
+          it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+          it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
+        )
       }
 
       fpsCounter(it.viewport)

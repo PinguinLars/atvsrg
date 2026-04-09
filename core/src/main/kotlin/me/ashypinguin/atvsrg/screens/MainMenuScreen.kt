@@ -8,7 +8,6 @@ import ktx.app.clearScreen
 import me.ashypinguin.atvsrg.*
 import me.ashypinguin.atvsrg.maps.BeatMap
 import me.ashypinguin.atvsrg.maps.BeatMapNote
-import me.ashypinguin.atvsrg.maps.BeatMapNotePosition
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.LEFT_COLUMN
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.LEFT_MID_COLUMN
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.RIGHT_COLUMN
@@ -44,6 +43,9 @@ class MainMenuScreen(game: Atvsrg) : AbstractScreen(game) {
         BeatMapNote(LEFT_MID_COLUMN, 2),
         BeatMapNote(RIGHT_MID_COLUMN, 3),
         BeatMapNote(RIGHT_COLUMN, 4),
+        BeatMapNote(RIGHT_COLUMN, 5),
+        BeatMapNote(LEFT_COLUMN, 6),
+        BeatMapNote(LEFT_MID_COLUMN, 6),
       )
       val map = BeatMap(240, 100_000_000, notes, "no-time-to-explain-by-goodkid.wav".toMusic())
       game.addScreen(GameScreen(game, map))
