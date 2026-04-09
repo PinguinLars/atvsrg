@@ -24,15 +24,24 @@ private const val KEY_UNPRESSED_DARKNESS = .5f
 private const val COLUMN_DARKNESS = .7f
 private const val NOTE_DARKNESS = .3f
 
+private const val BEAT_BAR_BEAT_AMOUNT = 8
+
 private val LEFT_COLOR = Color.YELLOW
 private val LEFT_MID_COLOR = Color.ORANGE
 private val RIGHT_MID_COLOR = Color.RED
 private val RIGHT_COLOR = Color.PURPLE
 
-class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : AbstractScreen(game) {
+class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   /** The time since that the fps last got updated in seconds */
   private var timeSinceLastFpsUpdate = 1f
   private var fps = 0
+
+  /**
+   * Handy internal variable to get beats
+   */
+  private val beats
+    get() = timeSinceStart * (map.bpm / 60)
+  private var timeSinceStart = 0f
 
   override fun render(delta: Float) {
     clear(GRAY_BG_TONE, GRAY_BG_TONE, GRAY_BG_TONE)
@@ -47,6 +56,7 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
       // delta also can be found with fps^-1 because fps is the inverse of delta and the inverse of an inverse is the original
       log.debug { "FPS: $fps, Delta: $delta" }
     }
+    timeSinceStart += delta
 
     game.withRenderer(ShapeRenderer.ShapeType.Filled) {
       //Make drawable screen black
@@ -113,6 +123,15 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
         it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
       )
 
+      //rhythm bar
+      color = Color.LIGHT_GRAY
+      rect(
+        it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+        it.viewport.worldHeight * (1f - (beats % BEAT_BAR_BEAT_AMOUNT / BEAT_BAR_BEAT_AMOUNT)),
+        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 4f),
+        it.viewport.worldHeight * .01f
+      )
+
       //Test note
       color = LEFT_COLOR.dull(NOTE_DARKNESS)
       rect(
@@ -125,13 +144,16 @@ class GameScreen(game: Atvsrg, /* Temporary */ val map: BeatMap? = null) : Abstr
       fpsCounter(it.viewport)
     }
 
-    game.withBatch { fpsCounter(fps, it.viewport, it.fpsFont) }
+    game.withBatch {
+      it.fpsFont.draw(this, "beats: ${beats.toInt()}", 0f, it.viewport.worldHeight * .9f)
+      fpsCounter(fps, it.viewport, it.fpsFont)
+    }
 
     if (input.isKeyPressed(Keys.Q)) game.exit()
   }
 
   override fun dispose() {
-    map?.dispose()
+    map.dispose()
     super.dispose()
   }
 }

@@ -16,9 +16,6 @@ private typealias Notes = List<BeatMapNote>
  * @property bpm The beats per minute of the map. This is used to calculate when notes should drop. (Which get dropped on a specific beat.)
  * @property notes A list of [BeatMapNote], which get dropped on [the beat specified][BeatMapNote.beat].
  */
-data class BeatMap(val song: Music, val length: Duration, val bpm: UInt, val notes: Notes) : Disposable {
-  @Suppress("unused")
-  constructor(songFile: FileHandle, length: Duration, bpm: UInt, notes: Notes) : this(Gdx.audio.newMusic(songFile), length, bpm, notes)
-
-  override fun dispose() = song.dispose()
+data class BeatMap(val bpm: Int) : Disposable {
+  override fun dispose() = Unit
 }

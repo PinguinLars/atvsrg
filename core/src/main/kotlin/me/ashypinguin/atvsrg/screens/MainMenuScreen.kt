@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align
 import ktx.app.clearScreen
 import me.ashypinguin.atvsrg.Atvsrg
 import me.ashypinguin.atvsrg.GRAY_BG_TONE
+import me.ashypinguin.atvsrg.maps.BeatMap
 import me.ashypinguin.atvsrg.withBatch
 import me.ashypinguin.atvsrg.withRenderer
 
@@ -35,7 +36,8 @@ class MainMenuScreen(game: Atvsrg) : AbstractScreen(game) {
     }
 
     if (Gdx.input.isTouched) {
-      game.addScreen(GameScreen(game))
+      val map = BeatMap(180)
+      game.addScreen(GameScreen(game, map))
       game.setScreen<GameScreen>()
       game.removeScreen<MainMenuScreen>()
       dispose()
