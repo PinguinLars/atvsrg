@@ -9,6 +9,10 @@ import me.ashypinguin.atvsrg.*
 import me.ashypinguin.atvsrg.maps.BeatMap
 import me.ashypinguin.atvsrg.maps.BeatMapNote
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition
+import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.LEFT_COLUMN
+import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.LEFT_MID_COLUMN
+import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.RIGHT_COLUMN
+import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.RIGHT_MID_COLUMN
 
 class MainMenuScreen(game: Atvsrg) : AbstractScreen(game) {
   override fun render(delta: Float) {
@@ -36,9 +40,12 @@ class MainMenuScreen(game: Atvsrg) : AbstractScreen(game) {
 
     if (Gdx.input.isTouched) {
       val notes = listOf(
-        BeatMapNote(BeatMapNotePosition.LEFT_COLUMN, 8)
+        BeatMapNote(LEFT_COLUMN, 1),
+        BeatMapNote(LEFT_MID_COLUMN, 2),
+        BeatMapNote(RIGHT_MID_COLUMN, 3),
+        BeatMapNote(RIGHT_COLUMN, 4),
       )
-      val map = BeatMap(180, 100_000_000, notes, "no-time-to-explain-by-goodkid.wav".toMusic())
+      val map = BeatMap(240, 100_000_000, notes, "no-time-to-explain-by-goodkid.wav".toMusic())
       game.addScreen(GameScreen(game, map))
       game.setScreen<GameScreen>()
       game.removeScreen<MainMenuScreen>()

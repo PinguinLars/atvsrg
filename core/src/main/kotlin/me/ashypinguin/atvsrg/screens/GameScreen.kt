@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import me.ashypinguin.atvsrg.*
 import me.ashypinguin.atvsrg.components.fpsCounter
 import me.ashypinguin.atvsrg.maps.BeatMap
+import me.ashypinguin.atvsrg.maps.BeatMapNotePosition
 import ktx.app.clearScreen as clear
 
 private val log = logger<GameScreen>()
@@ -24,29 +25,42 @@ private const val KEY_UNPRESSED_DARKNESS = .5f
 private const val COLUMN_DARKNESS = .7f
 private const val NOTE_DARKNESS = .3f
 
-private const val BEAT_SCROLL_SPEED = 8
+private const val BEAT_SCROLL_SPEED = 5
 
 private val LEFT_COLOR = Color.YELLOW
 private val LEFT_MID_COLOR = Color.ORANGE
 private val RIGHT_MID_COLOR = Color.RED
 private val RIGHT_COLOR = Color.PURPLE
 
+private const val MUSIC_VOLUME = 0.5f
+
 class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   /** The time since that the fps last got updated in seconds */
   private var timeSinceLastFpsUpdate = 1f
   private var fps = 0
+  private var lastValidIndex = 0
 
   /**
    * Handy internal variable to get beats
    */
-  private val beats
+  private val beat
     get() = timeSinceStart * (map.bpm / 60)
-  private var timeSinceStart = 0f
+  private var timeSinceStart = -2.5f
 
   override fun show() {
+    //init music
+    if (System.getenv("ATVSRG_MUTE")?.lowercase() != "true") {
+      map.song.volume = MUSIC_VOLUME
+    } else {
+      map.song.volume = 0f
+      log.warning { "Sound has been disabled because 'ATVSRG_MUTE' is true" }
+    }
     map.song.isLooping = false
     map.song.position = 0f
     map.song.play()
+
+    //make sure notes are sorted
+    map.sortNotes()
   }
 
   override fun render(delta: Float) {
@@ -133,25 +147,65 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       color = Color.LIGHT_GRAY
       rect(
         it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
-        it.viewport.worldHeight * (1f - (beats % BEAT_SCROLL_SPEED / BEAT_SCROLL_SPEED)),
+        // the .5f is an offset to not make the notes feel stuck to the bar
+        it.viewport.worldHeight * (1f - ((beat + .5f) % BEAT_SCROLL_SPEED / BEAT_SCROLL_SPEED)),
         it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 4f),
         it.viewport.worldHeight * .01f
       )
 
-      //Test note
-      color = LEFT_COLOR.dull(NOTE_DARKNESS)
-      rect(
-        it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
-        it.viewport.worldHeight * .6f,
-        it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-        it.viewport.worldHeight * NOTE_HEIGHT_PRECENT
-      )
+      with(map) {
+        //Notes
+        for (i in lastValidIndex..<notes.size) {
+          if (notes[i].beat > beat + BEAT_SCROLL_SPEED) break
+          if (notes[i].beat >= beat) when (notes[i].pos) {
+            BeatMapNotePosition.LEFT_COLUMN -> {
+              color = LEFT_COLOR.dull(NOTE_DARKNESS)
+              rect(
+                it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+                it.viewport.worldHeight * ((notes[i].beat - beat) / BEAT_SCROLL_SPEED),
+                it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+                it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
+              )
+            }
+
+            BeatMapNotePosition.LEFT_MID_COLUMN -> {
+              color = LEFT_MID_COLOR.dull(NOTE_DARKNESS)
+              rect(
+                it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT),
+                it.viewport.worldHeight * ((notes[i].beat - beat) / BEAT_SCROLL_SPEED),
+                it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+                it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
+              )
+            }
+
+            BeatMapNotePosition.RIGHT_MID_COLUMN -> {
+              color = RIGHT_MID_COLOR.dull(NOTE_DARKNESS)
+              rect(
+                it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT * 2),
+                it.viewport.worldHeight * ((notes[i].beat - beat) / BEAT_SCROLL_SPEED),
+                it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+                it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
+              )
+            }
+
+            BeatMapNotePosition.RIGHT_COLUMN -> {
+              color = RIGHT_COLOR.dull(NOTE_DARKNESS)
+              rect(
+                it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT * 3),
+                it.viewport.worldHeight * ((notes[i].beat - beat) / BEAT_SCROLL_SPEED),
+                it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+                it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
+              )
+            }
+          } else lastValidIndex = i + 1
+        }
+      }
 
       fpsCounter(it.viewport)
     }
 
     game.withBatch {
-      it.fpsFont.draw(this, "beats: ${beats.toInt()}", 0f, it.viewport.worldHeight * .9f)
+      it.fpsFont.draw(this, "beats: ${beat.toInt()}", 0f, it.viewport.worldHeight * .9f)
       fpsCounter(fps, it.viewport, it.fpsFont)
     }
 
@@ -159,7 +213,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       map.song.position > map.length ||
       !map.song.isPlaying ||
       input.isKeyPressed(Keys.Q)
-    ) TODO("Make a end screen")
+    ) TODO("Make an end screen")
   }
 
   override fun dispose() {
