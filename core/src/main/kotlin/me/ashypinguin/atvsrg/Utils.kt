@@ -31,12 +31,12 @@ inline fun Atvsrg.withBatch(scope: SpriteBatch.(Atvsrg) -> Unit) {
  *
  * @receiver The main [game][Atvsrg] instance
  * @param scope Function block that gets called between [ShapeRenderer.begin] and [ShapeRenderer.end]
- * @param type The [type][ShapeRenderer.ShapeType] the [ShapeRenderer] uses. (Optional defaults to whatever upstreams defaults to.)
+ * @param type The [type][ShapeRenderer.ShapeType] the [ShapeRenderer] uses. (Optional defaults to [Line][ShapeRenderer.ShapeType.Line])
  * @see ktx.graphics.use
  * @see withBatch
  */
-inline fun Atvsrg.withRenderer(type: ShapeRenderer.ShapeType? = null, scope: ShapeRenderer.(Atvsrg) -> Unit) {
-  if (type != null) renderer.begin(type) else renderer.begin()
+inline fun Atvsrg.withRenderer(type: ShapeRenderer.ShapeType = ShapeRenderer.ShapeType.Line, scope: ShapeRenderer.(Atvsrg) -> Unit) {
+  renderer.begin(type)
   renderer.scope(this)
   renderer.end()
 }
