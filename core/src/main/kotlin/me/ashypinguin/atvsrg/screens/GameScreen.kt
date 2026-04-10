@@ -8,6 +8,8 @@ import me.ashypinguin.atvsrg.*
 import me.ashypinguin.atvsrg.components.fpsCounter
 import me.ashypinguin.atvsrg.maps.BeatMap
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition
+import me.ashypinguin.atvsrg.maps.BeatMapRank
+import me.ashypinguin.atvsrg.maps.BeatMapStatus
 import ktx.app.clearScreen as clear
 
 private val log = logger<GameScreen>()
@@ -43,8 +45,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   /**
    * Handy internal variable to get beats
    */
-  private val beat
-    get() = timeSinceStart * (map.bpm / 60)
+  private val beat get() = timeSinceStart * (map.bpm / 60)
   private var timeSinceStart = -2.5f
 
   override fun show() {
@@ -264,7 +265,11 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       map.song.position > map.length ||
       !map.song.isPlaying ||
       input.isKeyPressed(Keys.Q)
-    ) TODO("Make an end screen")
+    ) {
+      game.addScreen(EndScreen(game, BeatMapStatus.PASSED(727_272, BeatMapRank.S)))
+      game.setScreen<EndScreen>()
+      game.removeScreen<GameScreen>()
+    }
   }
 
   override fun dispose() {
