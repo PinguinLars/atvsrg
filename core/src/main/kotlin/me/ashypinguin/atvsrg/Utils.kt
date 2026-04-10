@@ -36,7 +36,7 @@ inline fun Atvsrg.withBatch(scope: SpriteBatch.(Atvsrg) -> Unit) {
  * @see withBatch
  */
 inline fun Atvsrg.withRenderer(type: ShapeRenderer.ShapeType? = null, scope: ShapeRenderer.(Atvsrg) -> Unit) {
-  if (type != null) renderer.begin(type) else renderer.end()
+  if (type != null) renderer.begin(type) else renderer.begin()
   renderer.scope(this)
   renderer.end()
 }
