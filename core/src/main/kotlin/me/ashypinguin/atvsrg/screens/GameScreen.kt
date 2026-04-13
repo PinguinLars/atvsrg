@@ -44,6 +44,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   private var fps = 0
   private var lastValidIndex = 0
 
+  @Suppress("unused") //TODO: implement this
   private var acc = 1f
   private var score = 0
 
@@ -194,48 +195,46 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       }
 
       //Notes
-      with(map) {
-        shownNotes.forEach { note ->
-          when (note.pos) {
-            BeatMapNotePosition.LEFT_COLUMN -> {
-              color = LEFT_COLOR.dull(NOTE_DARKNESS)
-              rect(
-                it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
-                it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
-                it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-                it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
-              )
-            }
+      shownNotes.forEach { note ->
+        when (note.pos) {
+          BeatMapNotePosition.LEFT_COLUMN -> {
+            color = LEFT_COLOR.dull(NOTE_DARKNESS)
+            rect(
+              it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+              it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
+              it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+              it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
+            )
+          }
 
-            BeatMapNotePosition.LEFT_MID_COLUMN -> {
-              color = LEFT_MID_COLOR.dull(NOTE_DARKNESS)
-              rect(
-                it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT),
-                it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
-                it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-                it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
-              )
-            }
+          BeatMapNotePosition.LEFT_MID_COLUMN -> {
+            color = LEFT_MID_COLOR.dull(NOTE_DARKNESS)
+            rect(
+              it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT),
+              it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
+              it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+              it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
+            )
+          }
 
-            BeatMapNotePosition.RIGHT_MID_COLUMN -> {
-              color = RIGHT_MID_COLOR.dull(NOTE_DARKNESS)
-              rect(
-                it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT * 2),
-                it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
-                it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-                it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
-              )
-            }
+          BeatMapNotePosition.RIGHT_MID_COLUMN -> {
+            color = RIGHT_MID_COLOR.dull(NOTE_DARKNESS)
+            rect(
+              it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT * 2),
+              it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
+              it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+              it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
+            )
+          }
 
-            BeatMapNotePosition.RIGHT_COLUMN -> {
-              color = RIGHT_COLOR.dull(NOTE_DARKNESS)
-              rect(
-                it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT * 3),
-                it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
-                it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
-                it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
-              )
-            }
+          BeatMapNotePosition.RIGHT_COLUMN -> {
+            color = RIGHT_COLOR.dull(NOTE_DARKNESS)
+            rect(
+              it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT * 3),
+              it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
+              it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
+              it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
+            )
           }
         }
       }
