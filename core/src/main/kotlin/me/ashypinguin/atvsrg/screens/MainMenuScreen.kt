@@ -26,7 +26,7 @@ class MainMenuScreen(game: Atvsrg) : AbstractScreen(game) {
     }
 
     game.withBatch {
-      it.font.draw(
+      it.bigFont.draw(
         this,
         "Welcome by @vsrg!!\nPress anywhere to start",
         0f,

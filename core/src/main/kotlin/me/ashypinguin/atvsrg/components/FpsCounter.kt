@@ -9,7 +9,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport
 
 private const val FPS_WIDTH_PERCENT = .125f
 private const val FPS_HEIGHT_PERCENT = .075f
-private const val FPS_OFFSET_WALL_PERCENT = 0f
+private const val FPS_OFFSET_WALL_PERCENT = 1f - FPS_WIDTH_PERCENT
 private const val FPS_OFFSET_GROUND_PERCENT = 0f
 
 fun ShapeRenderer.fpsCounter(viewport: FitViewport) {

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import me.ashypinguin.atvsrg.*
 import me.ashypinguin.atvsrg.components.fpsCounter
+import me.ashypinguin.atvsrg.components.scoreCounter
 import me.ashypinguin.atvsrg.maps.BeatMap
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition
 import me.ashypinguin.atvsrg.maps.BeatMapRank
@@ -41,6 +42,9 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   private var timeSinceLastFpsUpdate = 1f
   private var fps = 0
   private var lastValidIndex = 0
+
+  private var acc = 1f
+  private var score = 0
 
   /**
    * Handy internal variable to get beats
@@ -79,6 +83,30 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     }
     timeSinceStart += delta
 
+    //Keys
+    val lKey = input.isKeyPressed(Keys.D)
+    val lmKey = input.isKeyPressed(Keys.F)
+    val rmKey = input.isKeyPressed(Keys.J)
+    val rKey = input.isKeyPressed(Keys.K)
+
+    // Get all notes
+    val shownNotes = buildList {
+      for (i in lastValidIndex..<map.notes.size) {
+        val note = map.notes[i]
+        if (note.beat > beat + BEAT_SCROLL_SPEED) break
+        else if (note.beat >= beat) add(note)
+        else lastValidIndex = i + 1
+      }
+    }
+
+    //Handle note hit events TODO
+/*
+    if (lKey) {}
+    if (lmKey) {}
+    if (rmKey) {}
+    if (rKey) {}
+*/
+
     game.withRenderer(ShapeRenderer.ShapeType.Filled) {
       //Make drawable screen black
       color = Color.BLACK
@@ -114,11 +142,16 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
         it.viewport.worldHeight
       )
 
-      //Keys
-      val lKey = input.isKeyPressed(Keys.D)
-      val lmKey = input.isKeyPressed(Keys.F)
-      val rmKey = input.isKeyPressed(Keys.J)
-      val rKey = input.isKeyPressed(Keys.K)
+
+      //rhythm bar
+      color = Color.LIGHT_GRAY
+      rect(
+        it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
+        // the .5f is an offset to not make the notes feel stuck to the bar
+        it.viewport.worldHeight * (1f - ((beat + .5f) % BEAT_SCROLL_SPEED / BEAT_SCROLL_SPEED)),
+        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 4f),
+        it.viewport.worldHeight * .01f
+      )
 
       //Inactive keys
       if (!lKey) {
@@ -158,26 +191,15 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
         )
       }
 
-      //rhythm bar
-      color = Color.LIGHT_GRAY
-      rect(
-        it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
-        // the .5f is an offset to not make the notes feel stuck to the bar
-        it.viewport.worldHeight * (1f - ((beat + .5f) % BEAT_SCROLL_SPEED / BEAT_SCROLL_SPEED)),
-        it.viewport.worldWidth * (NOTE_WIDTH_PRECENT * 4f),
-        it.viewport.worldHeight * .01f
-      )
-
       //Notes
       with(map) {
-        for (i in lastValidIndex..<notes.size) {
-          if (notes[i].beat > beat + BEAT_SCROLL_SPEED) break
-          if (notes[i].beat >= beat) when (notes[i].pos) {
+        shownNotes.forEach { note ->
+          when (note.pos) {
             BeatMapNotePosition.LEFT_COLUMN -> {
               color = LEFT_COLOR.dull(NOTE_DARKNESS)
               rect(
                 it.viewport.worldWidth * NOTE_WALL_OFFSET_PERCENT,
-                it.viewport.worldHeight * ((notes[i].beat - beat) / BEAT_SCROLL_SPEED),
+                it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
                 it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
                 it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
               )
@@ -187,7 +209,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
               color = LEFT_MID_COLOR.dull(NOTE_DARKNESS)
               rect(
                 it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT),
-                it.viewport.worldHeight * ((notes[i].beat - beat) / BEAT_SCROLL_SPEED),
+                it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
                 it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
                 it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
               )
@@ -197,7 +219,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
               color = RIGHT_MID_COLOR.dull(NOTE_DARKNESS)
               rect(
                 it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT * 2),
-                it.viewport.worldHeight * ((notes[i].beat - beat) / BEAT_SCROLL_SPEED),
+                it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
                 it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
                 it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
               )
@@ -207,12 +229,12 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
               color = RIGHT_COLOR.dull(NOTE_DARKNESS)
               rect(
                 it.viewport.worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PRECENT * 3),
-                it.viewport.worldHeight * ((notes[i].beat - beat) / BEAT_SCROLL_SPEED),
+                it.viewport.worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
                 it.viewport.worldWidth * NOTE_WIDTH_PRECENT,
                 it.viewport.worldWidth * NOTE_HEIGHT_PRECENT
               )
             }
-          } else lastValidIndex = i + 1
+          }
         }
       }
 
@@ -253,12 +275,15 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
         )
       }
 
+      // loading objects
       fpsCounter(it.viewport)
+      scoreCounter(it.viewport)
     }
 
     game.withBatch {
-      it.fpsFont.draw(this, "beats: ${beat.toInt()}", 0f, it.viewport.worldHeight * .9f)
-      fpsCounter(fps, it.viewport, it.fpsFont)
+      it.smallFont.draw(this, "beats: ${beat.toInt()}", 0f, it.viewport.worldHeight * .9f)
+      fpsCounter(fps, it.viewport, it.smallFont)
+      scoreCounter(score, it.viewport, it.smallFont)
     }
 
     if (timeSinceStart > map.length ||
@@ -266,7 +291,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       !map.song.isPlaying ||
       input.isKeyPressed(Keys.Q)
     ) {
-      game.addScreen(EndScreen(game, BeatMapStatus.PASSED(727_272, BeatMapRank.S)))
+      game.addScreen(EndScreen(game, BeatMapStatus.PASSED(score, BeatMapRank.S)))
       game.setScreen<EndScreen>()
       game.removeScreen<GameScreen>()
     }

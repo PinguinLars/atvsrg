@@ -29,7 +29,7 @@ class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
   val renderer by lazy { ShapeRenderer() }
 
   /** Default arial font used by LIBgdx */
-  val font by lazy {
+  val bigFont by lazy {
     log.info { "Loading font: Roboto-Regular.ttf with size 24" }
     val generator = FreeTypeFontGenerator("Roboto-Regular.ttf".toInternalFile())
     val parameter = FreeTypeFontGenerator.FreeTypeFontParameter().apply {
@@ -43,7 +43,7 @@ class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
     // Roboto-Regular.ttf should exist
     font!!
   }
-  val fpsFont by lazy {
+  val smallFont by lazy {
     log.info { "Loading font: Roboto-Regular.ttf with size 16" }
     val generator = FreeTypeFontGenerator("Roboto-Regular.ttf".toInternalFile())
     val parameter = FreeTypeFontGenerator.FreeTypeFontParameter().apply {
@@ -81,8 +81,8 @@ class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
   override fun dispose() {
     batch.dispose()
     renderer.dispose()
-    font.dispose()
-    fpsFont.dispose()
+    bigFont.dispose()
+    smallFont.dispose()
     super.dispose()
     log.info { "Exiting" }
   }
