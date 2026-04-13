@@ -8,6 +8,7 @@ import me.ashypinguin.atvsrg.*
 import me.ashypinguin.atvsrg.components.fpsCounter
 import me.ashypinguin.atvsrg.components.scoreCounter
 import me.ashypinguin.atvsrg.maps.BeatMap
+import me.ashypinguin.atvsrg.maps.BeatMapNote
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition
 import me.ashypinguin.atvsrg.maps.BeatMapRank
 import me.ashypinguin.atvsrg.maps.BeatMapStatus
@@ -52,6 +53,8 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   private val beat get() = timeSinceStart * (map.bpm / 60)
   private var timeSinceStart = -2.5f
 
+  private var shownNotes = mutableListOf<BeatMapNote>()
+
   override fun show() {
     //init music
     if (System.getenv("ATVSRG_MUTE")?.lowercase() != "true") {
@@ -90,13 +93,12 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     val rKey = input.isKeyPressed(Keys.K)
 
     // Get all notes
-    val shownNotes = buildList {
-      for (i in lastValidIndex..<map.notes.size) {
-        val note = map.notes[i]
-        if (note.beat > beat + BEAT_SCROLL_SPEED) break
-        else if (note.beat >= beat) add(note)
-        else lastValidIndex = i + 1
-      }
+    shownNotes.clear()
+    for (i in lastValidIndex..<map.notes.size) {
+      val note = map.notes[i]
+      if (note.beat > beat + BEAT_SCROLL_SPEED) break
+      else if (note.beat >= beat) shownNotes.add(note)
+      else lastValidIndex = i + 1
     }
 
     //Handle note hit events TODO
