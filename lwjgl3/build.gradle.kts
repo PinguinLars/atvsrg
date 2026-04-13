@@ -1,7 +1,7 @@
-@file:Suppress( "UnusedImport")
+@file:Suppress("UnusedImport")
 
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import io.github.fourlastor.construo.Target
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val enableGraalNative: String by project

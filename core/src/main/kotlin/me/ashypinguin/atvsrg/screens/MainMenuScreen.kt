@@ -5,13 +5,14 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import ktx.app.clearScreen
-import me.ashypinguin.atvsrg.*
+import me.ashypinguin.atvsrg.Atvsrg
+import me.ashypinguin.atvsrg.GRAY_BG_TONE
 import me.ashypinguin.atvsrg.maps.BeatMap
 import me.ashypinguin.atvsrg.maps.BeatMapNote
-import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.LEFT_COLUMN
-import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.LEFT_MID_COLUMN
-import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.RIGHT_COLUMN
-import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.RIGHT_MID_COLUMN
+import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.*
+import me.ashypinguin.atvsrg.utils.toMusic
+import me.ashypinguin.atvsrg.utils.withBatch
+import me.ashypinguin.atvsrg.utils.withRenderer
 
 class MainMenuScreen(game: Atvsrg) : AbstractScreen(game) {
   override fun render(delta: Float) {

@@ -1,6 +1,6 @@
 @file:Suppress("unused") // these are functions that are written in advanced.
 
-package me.ashypinguin.atvsrg
+package me.ashypinguin.atvsrg.utils
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
@@ -10,12 +10,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import ktx.assets.toInternalFile
 import ktx.log.error
+import me.ashypinguin.atvsrg.Atvsrg
 import kotlin.system.exitProcess
 
 /**
- * Start a [SpriteBatch] render with the [game][Atvsrg] instance.
+ * Start a [SpriteBatch] render with the [game][me.ashypinguin.atvsrg.Atvsrg] instance.
  *
- * @receiver The main [game][Atvsrg] instance
+ * @receiver The main [game][me.ashypinguin.atvsrg.Atvsrg] instance
  * @param scope Function block that gets called between [SpriteBatch.begin] and [SpriteBatch.end]
  * @see ktx.graphics.use
  * @see withRenderer
@@ -35,7 +36,10 @@ inline fun Atvsrg.withBatch(scope: SpriteBatch.(Atvsrg) -> Unit) {
  * @see ktx.graphics.use
  * @see withBatch
  */
-inline fun Atvsrg.withRenderer(type: ShapeRenderer.ShapeType = ShapeRenderer.ShapeType.Line, scope: ShapeRenderer.(Atvsrg) -> Unit) {
+inline fun Atvsrg.withRenderer(
+  type: ShapeRenderer.ShapeType = ShapeRenderer.ShapeType.Line,
+  scope: ShapeRenderer.(Atvsrg) -> Unit
+) {
   renderer.begin(type)
   renderer.scope(this)
   renderer.end()
@@ -79,3 +83,9 @@ fun Color.dull(t: Float): Color = this.cpy().lerp(Color.DARK_GRAY, t)
  * @receiver The location of the music file.
  */
 fun String.toMusic(): Music = Gdx.audio.newMusic(this.toInternalFile())
+
+
+fun <T> T.inlineIf(condition: Boolean, t: T.() -> Unit): T {
+  if (condition) t()
+  return this
+}

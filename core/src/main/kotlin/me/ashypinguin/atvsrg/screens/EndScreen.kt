@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled
 import me.ashypinguin.atvsrg.Atvsrg
 import me.ashypinguin.atvsrg.GRAY_BG_TONE
 import me.ashypinguin.atvsrg.maps.BeatMapStatus
-import me.ashypinguin.atvsrg.withRenderer
+import me.ashypinguin.atvsrg.utils.withRenderer
 import ktx.app.clearScreen as clear
 
 class EndScreen(game: Atvsrg, val status: BeatMapStatus) : AbstractScreen(game) {

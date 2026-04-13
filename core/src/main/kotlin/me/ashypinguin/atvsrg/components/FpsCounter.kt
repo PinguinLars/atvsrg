@@ -5,30 +5,28 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
-import com.badlogic.gdx.utils.viewport.FitViewport
+import me.ashypinguin.atvsrg.utils.FPS_HEIGHT_PERCENT
+import me.ashypinguin.atvsrg.utils.FPS_OFFSET_GROUND_PERCENT
+import me.ashypinguin.atvsrg.utils.FPS_OFFSET_WALL_PERCENT
+import me.ashypinguin.atvsrg.utils.FPS_WIDTH_PERCENT
 
-private const val FPS_WIDTH_PERCENT = .125f
-private const val FPS_HEIGHT_PERCENT = .075f
-private const val FPS_OFFSET_WALL_PERCENT = 1f - FPS_WIDTH_PERCENT
-private const val FPS_OFFSET_GROUND_PERCENT = 0f
-
-fun ShapeRenderer.fpsCounter(viewport: FitViewport) {
+fun ShapeRenderer.fpsCounter(worldWidth: Float, worldHeight: Float) {
   color = Color.DARK_GRAY
   rect(
-    viewport.worldWidth * FPS_OFFSET_WALL_PERCENT,
-    viewport.worldHeight * FPS_OFFSET_GROUND_PERCENT,
-    viewport.worldWidth * FPS_WIDTH_PERCENT,
-    viewport.worldHeight * FPS_HEIGHT_PERCENT
+    worldWidth * FPS_OFFSET_WALL_PERCENT,
+    worldHeight * FPS_OFFSET_GROUND_PERCENT,
+    worldWidth * FPS_WIDTH_PERCENT,
+    worldHeight * FPS_HEIGHT_PERCENT
   )
 }
 
-fun SpriteBatch.fpsCounter(fps: Int, viewport: FitViewport, font: BitmapFont) {
+fun SpriteBatch.fpsCounter(fps: Int, font: BitmapFont, worldWidth: Float, worldHeight: Float) {
   font.draw(
     this,
     "fps: $fps",
-    viewport.worldWidth * FPS_OFFSET_WALL_PERCENT,
-    viewport.worldHeight * (FPS_OFFSET_GROUND_PERCENT + FPS_HEIGHT_PERCENT * 0.75f),
-    viewport.worldWidth * FPS_WIDTH_PERCENT,
+    worldWidth * FPS_OFFSET_WALL_PERCENT,
+    worldHeight * (FPS_OFFSET_GROUND_PERCENT + FPS_HEIGHT_PERCENT * 0.75f),
+    worldWidth * FPS_WIDTH_PERCENT,
     Align.bottomLeft,
     false
   )

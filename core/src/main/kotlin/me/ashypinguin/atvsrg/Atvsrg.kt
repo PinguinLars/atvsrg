@@ -11,6 +11,7 @@ import ktx.assets.toInternalFile
 import ktx.async.KtxAsync
 import me.ashypinguin.atvsrg.screens.AbstractScreen
 import me.ashypinguin.atvsrg.screens.MainMenuScreen
+import me.ashypinguin.atvsrg.utils.toLogLevel
 
 private val log = logger<Atvsrg>()
 
@@ -25,6 +26,7 @@ class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
 
   /** Shared sprite batch */
   val batch by lazy { SpriteBatch() }
+
   /** Shared shape render */
   val renderer by lazy { ShapeRenderer() }
 
