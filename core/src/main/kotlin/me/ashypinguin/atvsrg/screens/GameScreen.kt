@@ -7,7 +7,11 @@ import me.ashypinguin.atvsrg.Atvsrg
 import me.ashypinguin.atvsrg.GRAY_BG_TONE
 import me.ashypinguin.atvsrg.components.*
 import me.ashypinguin.atvsrg.logger
-import me.ashypinguin.atvsrg.maps.*
+import me.ashypinguin.atvsrg.maps.BeatMap
+import me.ashypinguin.atvsrg.maps.BeatMapNote
+import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.*
+import me.ashypinguin.atvsrg.maps.BeatMapRank
+import me.ashypinguin.atvsrg.maps.BeatMapStatus
 import me.ashypinguin.atvsrg.utils.*
 import ktx.app.clearScreen as clear
 
@@ -47,7 +51,6 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     map.sortNotes()
   }
 
-  @Suppress("KotlinConstantConditions")
   override fun render(delta: Float) {
     clear(GRAY_BG_TONE, GRAY_BG_TONE, GRAY_BG_TONE)
     game.viewport.apply()
@@ -63,13 +66,12 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     }
     timeSinceStart += delta
 
-    //Keys
-    val lKey = input.isKeyPressed(Keys.D)
-    val lmKey = input.isKeyPressed(Keys.F)
-    val rmKey = input.isKeyPressed(Keys.J)
-    val rKey = input.isKeyPressed(Keys.K)
-
-    val keyStates = KeyStates(lKey, lmKey, rmKey, rKey)
+    val keyStates = KeyStates(
+      input.isKeyPressed(Keys.D),
+      input.isKeyPressed(Keys.F),
+      input.isKeyPressed(Keys.J),
+      input.isKeyPressed(Keys.K)
+    )
 
     // Get all notes
     shownNotes.clear()
@@ -81,12 +83,10 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     }
 
     //Handle note hit events TODO
-    /*
-        if (lKey) {}
-        if (lmKey) {}
-        if (rmKey) {}
-        if (rKey) {}
-    */
+/*
+    for (i in keyStates) {
+    }
+*/
 
     val worldWidth = game.viewport.worldWidth
     val worldHeight = game.viewport.worldHeight
@@ -99,22 +99,22 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       //Inactive keys
       keyStates.forEachIndexed { i, pressed ->
         if (pressed) return@forEachIndexed
-        key(i.offsetToColor(), pressed, worldWidth, worldHeight, i)
+        key(i.offsetToUnpressedColor(), worldWidth, worldHeight, i)
       }
 
       //Notes
       shownNotes.forEach { note ->
         when (note.pos) {
-          BeatMapNotePosition.LEFT_COLUMN -> note(LEFT_COLOR, worldWidth, worldHeight, 0, note.beat, beat)
-          BeatMapNotePosition.LEFT_MID_COLUMN -> note(LEFT_MID_COLOR, worldWidth, worldHeight, 1, note.beat, beat)
-          BeatMapNotePosition.RIGHT_MID_COLUMN -> note(RIGHT_MID_COLOR, worldWidth, worldHeight, 2, note.beat, beat)
-          BeatMapNotePosition.RIGHT_COLUMN -> note(RIGHT_COLOR, worldWidth, worldHeight, 3, note.beat, beat)
+          LEFT_COLUMN -> note(LEFT_NOTE_COLOR, worldWidth, worldHeight, 0, note.beat, beat)
+          LEFT_MID_COLUMN -> note(LEFT_MID_NOTE_COLOR, worldWidth, worldHeight, 1, note.beat, beat)
+          RIGHT_MID_COLUMN -> note(RIGHT_MID_NOTE_COLOR, worldWidth, worldHeight, 2, note.beat, beat)
+          RIGHT_COLUMN -> note(RIGHT_NOTE_COLOR, worldWidth, worldHeight, 3, note.beat, beat)
         }
       }
 
       keyStates.forEachIndexed { i, pressed ->
         if (!pressed) return@forEachIndexed
-        key(i.offsetToColor(), pressed, worldWidth, worldHeight, i)
+        key(i.offsetToColor(), worldWidth, worldHeight, i)
       }
 
       fpsCounter(worldWidth, worldHeight)

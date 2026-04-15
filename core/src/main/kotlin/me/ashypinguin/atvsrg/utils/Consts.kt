@@ -1,7 +1,5 @@
 package me.ashypinguin.atvsrg.utils
 
-import com.badlogic.gdx.graphics.Color
-
 const val RHYTHM_BAR_OFFSET = .5f
 
 const val NOTE_WIDTH_PRECENT = .15f
@@ -20,10 +18,7 @@ const val NOTE_DARKNESS = .3f
 
 const val BEAT_SCROLL_SPEED = 5
 
-val LEFT_COLOR = Color.YELLOW!!
-val LEFT_MID_COLOR = Color.ORANGE!!
-val RIGHT_MID_COLOR = Color.RED!!
-val RIGHT_COLOR = Color.PURPLE!!
+const val BAD_MAX_OFFSET_SEC = 5e-3f
 
 const val MUSIC_VOLUME = .4f
 const val FPS_WIDTH_PERCENT = .125f

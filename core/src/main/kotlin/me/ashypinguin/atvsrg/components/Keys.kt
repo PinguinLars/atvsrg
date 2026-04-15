@@ -19,8 +19,8 @@ data class KeyStates(val left: Boolean, val leftMid: Boolean, val rightMid: Bool
   }
 }
 
-fun ShapeRenderer.key(color: Color, pressed: Boolean, worldWidth: Float, worldHeight: Float, offset: Int) {
-  this.color = if (pressed) color else color.dull(KEY_UNPRESSED_DARKNESS)
+fun ShapeRenderer.key(color: Color, worldWidth: Float, worldHeight: Float, offset: Int) {
+  this.color = color
   rect(
     worldWidth * (NOTE_WIDTH_PRECENT * offset + NOTE_WALL_OFFSET_PERCENT),
     worldHeight * NOTE_GROUND_OFFSET_PERCENT,
