@@ -1,11 +1,13 @@
+@file:Suppress("HasPlatformType")
+
 package me.ashypinguin.atvsrg.utils
 
-import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Color.*
 
-val LEFT_COLOR = Color.YELLOW!!
-val LEFT_MID_COLOR = Color.ORANGE!!
-val RIGHT_MID_COLOR = Color.RED!!
-val RIGHT_COLOR = Color.PURPLE!!
+val LEFT_COLOR = YELLOW
+val LEFT_MID_COLOR = ORANGE
+val RIGHT_MID_COLOR = RED
+val RIGHT_COLOR = PURPLE
 
 val LEFT_COLUMN_COLOR = LEFT_COLOR.dull(COLUMN_DARKNESS)
 val LEFT_MID_COLUMN_COLOR = LEFT_MID_COLOR.dull(COLUMN_DARKNESS)
@@ -22,7 +24,9 @@ val LEFT_MID_NOTE_COLOR = LEFT_MID_COLOR.dull(NOTE_DARKNESS)
 val RIGHT_MID_NOTE_COLOR = RIGHT_MID_COLOR.dull(NOTE_DARKNESS)
 val RIGHT_NOTE_COLOR = RIGHT_COLOR.dull(NOTE_DARKNESS)
 
-val RHYTHM_BAR_COLOR = Color.LIGHT_GRAY!!
+val RHYTHM_BAR_COLOR = LIGHT_GRAY
+val UI_ELEMENT_BG_COLOR = DARK_GRAY
+val DRAWABLE_BG_COLOR = BLACK
 
 fun Int.offsetToColor() = when (this) {
   0 -> LEFT_COLOR

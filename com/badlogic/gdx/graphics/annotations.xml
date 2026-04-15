@@ -1,0 +1,100 @@
+<root>
+    <item name='com.badlogic.gdx.graphics.Color WHITE'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color LIGHT_GRAY'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color CLEAR'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color CLEAR_WHITE'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color BLUE'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color NAVY'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color ROYAL'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color SLATE'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color SKY'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color CYAN'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color TEAL'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color GREEN'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color CHARTREUSE'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color LIME'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color FOREST'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color OLIVE'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color YELLOW'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color GOLD'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color GOLDENROD'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color ORANGE'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color BROWN'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color TAN'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color FIREBRICK'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color RED'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color SCARLET'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color CORAL'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color SALMON'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color PINK'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+
+    <item name='com.badlogic.gdx.graphics.Color MAGENTA'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+
+    <item name='com.badlogic.gdx.graphics.Color PURPLE'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color VIOLET'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+    <item name='com.badlogic.gdx.graphics.Color MAROON'>
+        <annotation name="org.jetbrains.annotations.NotNull"/>
+    </item>
+</root>
