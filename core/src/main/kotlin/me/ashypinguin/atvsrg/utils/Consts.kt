@@ -18,7 +18,11 @@ const val NOTE_DARKNESS = .3f
 
 const val BEAT_SCROLL_SPEED = 5
 
-const val BAD_MAX_OFFSET_SEC = 5e-3f
+const val BAD_MAX_OFFSET_SEC = 50e-3f
+const val MEH_MAX_OFFSET_SEC = 40e-3f
+const val GOOD_MAX_OFFSET_SEC = 30e-3f
+const val GREAT_MAX_OFFSET_SEC = 20e-3f
+const val PERFECT_MAX_OFFSET_SEC = 20e-3f
 
 const val MUSIC_VOLUME = .4f
 const val FPS_WIDTH_PERCENT = .125f
