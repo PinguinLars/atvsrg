@@ -47,6 +47,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     map.sortNotes()
   }
 
+  @Suppress("KotlinConstantConditions")
   override fun render(delta: Float) {
     clear(GRAY_BG_TONE, GRAY_BG_TONE, GRAY_BG_TONE)
     game.viewport.apply()
@@ -98,15 +99,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       //Inactive keys
       keyStates.forEachIndexed { i, pressed ->
         if (pressed) return@forEachIndexed
-        key(
-          when (i) {
-            0 -> LEFT_COLOR
-            1 -> LEFT_MID_COLOR
-            2 -> RIGHT_MID_COLOR
-            3 -> RIGHT_COLOR
-            else -> throw IllegalArgumentException("Unexpected key index $i")
-          }, false, worldWidth, worldHeight, i
-        )
+        key(i.offsetToColor(), pressed, worldWidth, worldHeight, i)
       }
 
       //Notes
@@ -121,15 +114,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
 
       keyStates.forEachIndexed { i, pressed ->
         if (!pressed) return@forEachIndexed
-        key(
-          when (i) {
-            0 -> LEFT_COLOR
-            1 -> LEFT_MID_COLOR
-            2 -> RIGHT_MID_COLOR
-            3 -> RIGHT_COLOR
-            else -> throw IllegalArgumentException("Unexpected key index $i")
-          }, true, worldWidth, worldHeight, i
-        )
+        key(i.offsetToColor(), pressed, worldWidth, worldHeight, i)
       }
 
       fpsCounter(worldWidth, worldHeight)

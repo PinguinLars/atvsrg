@@ -89,3 +89,11 @@ fun <T> T.inlineIf(condition: Boolean, t: T.() -> Unit): T {
   if (condition) t()
   return this
 }
+
+fun Int.offsetToColor() = when (this) {
+  0 -> LEFT_COLOR
+  1 -> LEFT_MID_COLOR
+  2 -> RIGHT_MID_COLOR
+  3 -> RIGHT_COLOR
+  else -> throw IllegalArgumentException("Unexpected key index $this")
+}

@@ -23,7 +23,7 @@ class AtLogger(name: String) : Logger(name) {
   @OptIn(ExperimentalContracts::class)
   fun warning(message: () -> String) {
     contract { callsInPlace(message, InvocationKind.AT_MOST_ONCE) }
-    if (Gdx.app.logLevel >= Application.LOG_INFO) Gdx.app.log("WARNING", buildMessage(message()))
+    if (Gdx.app.logLevel >= Application.LOG_ERROR) Gdx.app.log("WARNING", buildMessage(message()))
   }
 }
 
