@@ -11,11 +11,10 @@ import ktx.assets.toInternalFile
 import ktx.async.KtxAsync
 import me.ashypinguin.atvsrg.screens.AbstractScreen
 import me.ashypinguin.atvsrg.screens.MainMenuScreen
+import me.ashypinguin.atvsrg.utils.logger
 import me.ashypinguin.atvsrg.utils.toLogLevel
 
 private val log = logger<Atvsrg>()
-
-const val GRAY_BG_TONE = .3f
 
 /**
  * The main game instance.

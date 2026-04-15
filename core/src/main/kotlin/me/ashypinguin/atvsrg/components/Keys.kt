@@ -22,9 +22,9 @@ data class KeyStates(val left: Boolean, val leftMid: Boolean, val rightMid: Bool
 fun ShapeRenderer.key(color: Color, worldWidth: Float, worldHeight: Float, offset: Int) {
   this.color = color
   rect(
-    worldWidth * (NOTE_WIDTH_PRECENT * offset + NOTE_WALL_OFFSET_PERCENT),
+    worldWidth * (NOTE_WIDTH_PERCENT * offset + NOTE_WALL_OFFSET_PERCENT),
     worldHeight * NOTE_GROUND_OFFSET_PERCENT,
-    worldWidth * NOTE_WIDTH_PRECENT,
-    worldHeight * NOTE_HEIGHT_PRECENT
+    worldWidth * NOTE_WIDTH_PERCENT,
+    worldHeight * NOTE_HEIGHT_PERCENT
   )
 }

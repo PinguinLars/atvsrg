@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.utils.Align
 import ktx.app.clearScreen
 import me.ashypinguin.atvsrg.Atvsrg
-import me.ashypinguin.atvsrg.GRAY_BG_TONE
 import me.ashypinguin.atvsrg.maps.BeatMap
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.LEFT_COLUMN
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.LEFT_MID_COLUMN

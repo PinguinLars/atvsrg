@@ -2,7 +2,7 @@ package me.ashypinguin.atvsrg.screens
 
 import ktx.app.KtxScreen
 import me.ashypinguin.atvsrg.Atvsrg
-import me.ashypinguin.atvsrg.logger
+import me.ashypinguin.atvsrg.utils.logger
 
 private val log = logger<AbstractScreen>()
 

@@ -4,9 +4,7 @@ import com.badlogic.gdx.Gdx.input
 import com.badlogic.gdx.Input.Keys
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import me.ashypinguin.atvsrg.Atvsrg
-import me.ashypinguin.atvsrg.GRAY_BG_TONE
 import me.ashypinguin.atvsrg.components.*
-import me.ashypinguin.atvsrg.logger
 import me.ashypinguin.atvsrg.maps.BeatMap
 import me.ashypinguin.atvsrg.maps.BeatMapNote
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.*
@@ -30,7 +28,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   /**
    * Handy internal variable to get beats
    */
-  private val beat get() = timeSinceStart * (map.bpm / 60)
+  private val beat get() = timeSinceStart * (map.bpm / 60f)
   private var timeSinceStart = -2.5f
 
   private var shownNotes = mutableListOf<BeatMapNote>()
@@ -83,17 +81,17 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     }
 
     //Handle note hit events TODO
-/*
-    for (i in keyStates) {
-    }
-*/
+    /*
+        for (i in keyStates) {
+        }
+    */
 
     val worldWidth = game.viewport.worldWidth
     val worldHeight = game.viewport.worldHeight
 
     game.withRenderer(ShapeRenderer.ShapeType.Filled) {
       drawableArea(worldWidth, worldHeight)
-      columns(worldWidth * NOTE_WIDTH_PRECENT, worldHeight, worldWidth)
+      columns(worldWidth * NOTE_WIDTH_PERCENT, worldHeight, worldWidth)
       rhythmBar(worldWidth, worldHeight, beat)
 
       //Inactive keys
@@ -128,7 +126,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     }
 
     if (timeSinceStart > map.length || map.song.position > map.length || !map.song.isPlaying || input.isKeyPressed(Keys.Q)) {
-      game.addScreen(EndScreen(game, BeatMapStatus.PASSED(score, BeatMapRank.S)))
+      game.addScreen(EndScreen(game, BeatMapStatus.Passed(score, BeatMapRank.S)))
       game.setScreen<EndScreen>()
       game.removeScreen<GameScreen>()
     }

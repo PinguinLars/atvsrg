@@ -9,7 +9,7 @@ fun ShapeRenderer.rhythmBar(worldWidth: Float, worldHeight: Float, beat: Float) 
     worldWidth * NOTE_WALL_OFFSET_PERCENT,
     // the .5f is an offset to not make the notes feel stuck to the bar
     worldHeight * (1f - ((beat + RHYTHM_BAR_OFFSET) % BEAT_SCROLL_SPEED / BEAT_SCROLL_SPEED)),
-    worldWidth * (NOTE_WIDTH_PRECENT * 4f),
+    worldWidth * (NOTE_WIDTH_PERCENT * 4f),
     worldHeight * .01f
   )
 }

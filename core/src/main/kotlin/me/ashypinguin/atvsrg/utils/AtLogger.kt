@@ -1,4 +1,4 @@
-package me.ashypinguin.atvsrg
+package me.ashypinguin.atvsrg.utils
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx
