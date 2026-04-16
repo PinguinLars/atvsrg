@@ -1,12 +1,14 @@
 package me.ashypinguin.atvsrg.screens
 
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.Color.LIME
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line
 import me.ashypinguin.atvsrg.Atvsrg
 import me.ashypinguin.atvsrg.components.clear
 import me.ashypinguin.atvsrg.components.drawableArea
-import me.ashypinguin.atvsrg.maps.BeatMapRank.S
-import me.ashypinguin.atvsrg.maps.BeatMapRank.SS
+import me.ashypinguin.atvsrg.maps.BeatMapRank.*
 import me.ashypinguin.atvsrg.maps.BeatMapStatus
 import me.ashypinguin.atvsrg.utils.*
 
@@ -170,7 +172,41 @@ class EndScreen(game: Atvsrg, val status: BeatMapStatus) : AbstractScreen(game) 
           }
         }
 
-        else -> TODO()
+        A -> {
+          val leftBorder = worldWidth * .6f
+          val rightBorder = worldWidth * .85f
+          val bottomBorder = worldHeight * .3f
+          val topBorder = worldHeight * .75f
+
+          color = RANK_A_COLOR
+
+          triangle(
+            leftBorder,bottomBorder,
+            worldWidth * .65f, bottomBorder,
+            worldWidth * .75f, topBorder,
+          )
+          triangle(
+            leftBorder,bottomBorder,
+            worldWidth * .75f, topBorder,
+            worldWidth * .7f, topBorder,
+          )
+          triangle(
+            rightBorder, bottomBorder,
+            worldWidth * .8f, bottomBorder,
+            worldWidth * .7f, topBorder,
+          )
+          triangle(
+            rightBorder, bottomBorder,
+            worldWidth * .7f, topBorder,
+            worldWidth * .75f, topBorder,
+          )
+          rect(worldWidth * .675f, worldHeight * .45f, worldWidth * .1f, worldHeight * .075f)
+        }
+
+        B -> {}
+        C -> {}
+        D -> {}
+        F -> {}
       }
     }
   }
