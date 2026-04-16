@@ -2,7 +2,6 @@
 
 package me.ashypinguin.atvsrg.utils
 
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.Color.*
 
 val LEFT_COLOR = YELLOW
@@ -35,7 +34,7 @@ val RANK_A_COLOR = LIME
 val RANK_B_COLOR = YELLOW
 val RANK_C_COLOR = ORANGE
 val RANK_D_COLOR = RED
-val RANK_F_COLOR = BLACK
+val RANK_F_COLOR = DRAWABLE_BG_COLOR
 
 fun Int.offsetToColor() = when (this) {
   0 -> LEFT_COLOR

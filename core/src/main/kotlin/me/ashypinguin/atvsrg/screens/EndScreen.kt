@@ -41,7 +41,6 @@ class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression"
       //rank letter
       rect(worldWidth * .5f, worldHeight * .2f, worldWidth * .45f, worldHeight * .65f)
 
-      //Gold SS
       when (rank) {
         SS -> {
           color = RANK_SS_COLOR

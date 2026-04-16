@@ -33,6 +33,19 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
 
   private var shownNotes = mutableListOf<BeatMapNote>()
 
+  private var worldWidth = game.viewport.worldWidth
+  private var worldHeight = game.viewport.worldHeight
+
+  private var noteWallOffset = worldWidth * NOTE_WALL_OFFSET_PERCENT
+  private var keyGroundOffset = worldHeight * NOTE_GROUND_OFFSET_PERCENT
+  private var rhythmBarHeight = worldHeight * .01f
+  private var noteWidth = worldWidth * NOTE_WIDTH_PERCENT
+  private var noteHeight = worldHeight * NOTE_HEIGHT_PERCENT
+  private var fpsX = worldWidth * FPS_OFFSET_WALL_PERCENT
+  private var fpsY = worldHeight * FPS_OFFSET_GROUND_PERCENT
+  private var fpsWidth = worldWidth * FPS_WIDTH_PERCENT
+  private var fpsHeight = worldHeight * FPS_HEIGHT_PERCENT
+
   override fun show() {
     //init music
     if (System.getenv("ATVSRG_MUTE")?.lowercase() != "true") {
@@ -86,42 +99,73 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
         }
     */
 
-    val worldWidth = game.viewport.worldWidth
-    val worldHeight = game.viewport.worldHeight
-
     game.withRenderer(ShapeRenderer.ShapeType.Filled) {
       drawableArea(worldWidth, worldHeight)
-      columns(worldWidth * NOTE_WIDTH_PERCENT, worldHeight, worldWidth)
-      rhythmBar(worldWidth, worldHeight, beat)
+      columns(noteWidth, worldHeight, noteWallOffset)
+      rhythmBar(
+        noteWallOffset, rhythmBarHeight, noteWidth * 4f,
+        worldHeight * (1f - ((beat + RHYTHM_BAR_OFFSET) % BEAT_SCROLL_SPEED / BEAT_SCROLL_SPEED))
+      )
 
       //Inactive keys
       keyStates.forEachIndexed { i, pressed ->
         if (pressed) return@forEachIndexed
-        key(i.offsetToUnpressedColor(), worldWidth, worldHeight, i)
+        key(i.offsetToUnpressedColor(), i, noteWallOffset, keyGroundOffset, noteWidth, noteHeight)
       }
 
       //Notes
       shownNotes.forEach { note ->
         when (note.pos) {
-          LEFT_COLUMN -> note(LEFT_NOTE_COLOR, worldWidth, worldHeight, 0, note.beat, beat)
-          LEFT_MID_COLUMN -> note(LEFT_MID_NOTE_COLOR, worldWidth, worldHeight, 1, note.beat, beat)
-          RIGHT_MID_COLUMN -> note(RIGHT_MID_NOTE_COLOR, worldWidth, worldHeight, 2, note.beat, beat)
-          RIGHT_COLUMN -> note(RIGHT_NOTE_COLOR, worldWidth, worldHeight, 3, note.beat, beat)
+          LEFT_COLUMN -> note(
+            LEFT_NOTE_COLOR,
+            0,
+            noteWallOffset,
+            worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
+            noteWidth,
+            noteHeight,
+          )
+
+          LEFT_MID_COLUMN -> note(
+            LEFT_MID_NOTE_COLOR,
+            1,
+            noteWallOffset,
+            worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
+            noteWidth,
+            noteHeight,
+          )
+
+          RIGHT_MID_COLUMN -> note(
+            RIGHT_MID_NOTE_COLOR,
+            2,
+            noteWallOffset,
+            worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
+            noteWidth,
+            noteHeight,
+          )
+
+          RIGHT_COLUMN -> note(
+            RIGHT_NOTE_COLOR,
+            3,
+            noteWallOffset,
+            worldHeight * ((note.beat - beat) / BEAT_SCROLL_SPEED),
+            noteWidth,
+            noteHeight,
+          )
         }
       }
 
       keyStates.forEachIndexed { i, pressed ->
         if (!pressed) return@forEachIndexed
-        key(i.offsetToColor(), worldWidth, worldHeight, i)
+        key(i.offsetToColor(), i, noteWallOffset, keyGroundOffset, noteWidth, noteHeight)
       }
 
-      fpsCounter(worldWidth, worldHeight)
+      fpsCounter(fpsX, fpsY, fpsWidth, fpsHeight)
       scoreCounter(worldWidth, worldHeight)
     }
 
     game.withBatch {
       it.smallFont.draw(this, "beats: ${beat.toInt()}", 0f, worldHeight * .9f)
-      fpsCounter(fps, it.smallFont, worldWidth, worldHeight)
+      fpsCounter(fps, it.smallFont, fpsX, fpsY + fpsHeight * .75f, fpsWidth)
       scoreCounter(score, it.smallFont, worldWidth, worldHeight)
     }
 
@@ -135,5 +179,22 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   override fun dispose() {
     map.dispose()
     super.dispose()
+  }
+
+  //recalculate pseudo consts
+  override fun resize(width: Int, height: Int) {
+    worldWidth = game.viewport.worldWidth
+    worldHeight = game.viewport.worldHeight
+    noteWallOffset = worldWidth * NOTE_WALL_OFFSET_PERCENT
+    rhythmBarHeight = worldHeight * .01f
+    noteWidth = worldWidth * NOTE_WIDTH_PERCENT
+    noteHeight = worldHeight * NOTE_HEIGHT_PERCENT
+    keyGroundOffset = worldHeight * NOTE_GROUND_OFFSET_PERCENT
+    fpsX = worldWidth * FPS_OFFSET_WALL_PERCENT
+    fpsY = worldHeight * FPS_OFFSET_GROUND_PERCENT
+    fpsWidth = worldWidth * FPS_WIDTH_PERCENT
+    fpsHeight = worldHeight * FPS_HEIGHT_PERCENT
+
+    super.resize(width, height)
   }
 }

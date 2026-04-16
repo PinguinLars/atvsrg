@@ -2,7 +2,6 @@ package me.ashypinguin.atvsrg.components
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
-import me.ashypinguin.atvsrg.utils.*
 
 data class KeyStates(val left: Boolean, val leftMid: Boolean, val rightMid: Boolean, val right: Boolean) :
   Iterable<Boolean> {
@@ -19,12 +18,14 @@ data class KeyStates(val left: Boolean, val leftMid: Boolean, val rightMid: Bool
   }
 }
 
-fun ShapeRenderer.key(color: Color, worldWidth: Float, worldHeight: Float, offset: Int) {
+fun ShapeRenderer.key(
+  color: Color,
+  offset: Int,
+  wallOffset: Float,
+  groundOffset: Float,
+  noteWidth: Float,
+  noteHeight: Float
+) {
   this.color = color
-  rect(
-    worldWidth * (NOTE_WIDTH_PERCENT * offset + NOTE_WALL_OFFSET_PERCENT),
-    worldHeight * NOTE_GROUND_OFFSET_PERCENT,
-    worldWidth * NOTE_WIDTH_PERCENT,
-    worldHeight * NOTE_HEIGHT_PERCENT
-  )
+  rect(noteWidth * offset + wallOffset, groundOffset, noteWidth, noteHeight)
 }
