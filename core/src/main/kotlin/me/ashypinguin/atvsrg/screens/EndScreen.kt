@@ -2,7 +2,6 @@ package me.ashypinguin.atvsrg.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line
 import me.ashypinguin.atvsrg.Atvsrg
@@ -255,7 +254,10 @@ class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression"
           val bottomBorder = worldHeight * .3f
           val topBorder = worldHeight * .75f
 
-
+          color = RANK_C_COLOR
+          arc(worldWidth * .75f, worldHeight * (.3f + .45f / 2), worldHeight * (.45f / 2), 85f, 190f, ROUNDING_SEGMENTS)
+          color = UI_ELEMENT_BG_COLOR
+          arc(worldWidth * .75f, worldHeight * (.3f + .45f / 2), worldHeight * .175f, 85f, 190f, ROUNDING_SEGMENTS)
         }
 
         D -> {}
