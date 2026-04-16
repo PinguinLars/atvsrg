@@ -209,5 +209,19 @@ class EndScreen(game: Atvsrg, val status: BeatMapStatus) : AbstractScreen(game) 
         F -> {}
       }
     }
+
+    //debug
+    if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+      rank = when (rank) {
+        SS -> S
+        S -> A
+        A -> B
+        B -> C
+        C -> D
+        D -> F
+        F -> SS
+      }
+      log.debug { "rank = $rank" }
+    }
   }
 }
