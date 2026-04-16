@@ -126,7 +126,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     }
 
     if (timeSinceStart > map.length || map.song.position > map.length || !map.song.isPlaying || input.isKeyPressed(Keys.Q)) {
-      game.addScreen(EndScreen(game, BeatMapStatus.Passed(score, BeatMapRank.A)))
+      game.addScreen(EndScreen(game, BeatMapStatus.Passed(score, BeatMapRank.B)))
       game.setScreen<EndScreen>()
       game.removeScreen<GameScreen>()
     }

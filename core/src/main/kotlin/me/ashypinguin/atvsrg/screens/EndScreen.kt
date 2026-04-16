@@ -1,8 +1,8 @@
 package me.ashypinguin.atvsrg.screens
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.Color.LIME
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Line
 import me.ashypinguin.atvsrg.Atvsrg
@@ -14,7 +14,9 @@ import me.ashypinguin.atvsrg.utils.*
 
 private val log = logger<EndScreen>()
 
-class EndScreen(game: Atvsrg, val status: BeatMapStatus) : AbstractScreen(game) {
+class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression") private val status: BeatMapStatus) :
+  AbstractScreen(game) {
+  var rank = status.rank
   override fun render(delta: Float) {
     clear()
     game.viewport.apply()
@@ -41,7 +43,7 @@ class EndScreen(game: Atvsrg, val status: BeatMapStatus) : AbstractScreen(game) 
       rect(worldWidth * .5f, worldHeight * .2f, worldWidth * .45f, worldHeight * .65f)
 
       //Gold SS
-      when (status.rank) {
+      when (rank) {
         SS -> {
           color = RANK_SS_COLOR
 
@@ -181,12 +183,12 @@ class EndScreen(game: Atvsrg, val status: BeatMapStatus) : AbstractScreen(game) 
           color = RANK_A_COLOR
 
           triangle(
-            leftBorder,bottomBorder,
+            leftBorder, bottomBorder,
             worldWidth * .65f, bottomBorder,
             worldWidth * .75f, topBorder,
           )
           triangle(
-            leftBorder,bottomBorder,
+            leftBorder, bottomBorder,
             worldWidth * .75f, topBorder,
             worldWidth * .7f, topBorder,
           )
@@ -203,8 +205,59 @@ class EndScreen(game: Atvsrg, val status: BeatMapStatus) : AbstractScreen(game) 
           rect(worldWidth * .675f, worldHeight * .45f, worldWidth * .1f, worldHeight * .075f)
         }
 
-        B -> {}
-        C -> {}
+        B -> {
+          val leftBorder = worldWidth * .6f
+          val rightBorder = worldWidth * .85f
+          val bottomBorder = worldHeight * .3f
+          val topBorder = worldHeight * .75f
+
+          color = RANK_B_COLOR
+          rect(worldWidth * .625f, bottomBorder, worldWidth * .025f, worldHeight * .45f)
+          arc(
+            worldWidth * .65f,
+            worldHeight * .65f,
+            worldHeight * .1f,
+            270f,
+            180f,
+            ROUNDING_SEGMENTS
+          )
+          arc(
+            worldWidth * .65f,
+            worldHeight * .45f,
+            worldHeight * .15f,
+            270f,
+            180f,
+            ROUNDING_SEGMENTS
+          )
+
+          color = UI_ELEMENT_BG_COLOR
+          arc(
+            worldWidth * .65f,
+            worldHeight * .65f,
+            worldHeight * .05f,
+            270f,
+            180f,
+            ROUNDING_SEGMENTS
+          )
+          arc(
+            worldWidth * .65f,
+            worldHeight * .45f,
+            worldHeight * .1f,
+            270f,
+            180f,
+            ROUNDING_SEGMENTS
+          )
+        }
+
+        C -> {
+          val leftBorder = worldWidth * .6f
+          val rightBorder = worldWidth * .85f
+          val bottomBorder = worldHeight * .3f
+          val topBorder = worldHeight * .75f
+
+
+        }
+
         D -> {}
         F -> {}
       }

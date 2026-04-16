@@ -31,6 +31,7 @@ val DRAWABLE_BG_COLOR = BLACK
 val RANK_SS_COLOR = GOLD
 val RANK_S_COLOR = LIGHT_GRAY
 val RANK_A_COLOR = LIME
+val RANK_B_COLOR = YELLOW
 
 fun Int.offsetToColor() = when (this) {
   0 -> LEFT_COLOR
