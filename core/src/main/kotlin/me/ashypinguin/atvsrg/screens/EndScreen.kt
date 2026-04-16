@@ -260,8 +260,47 @@ class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression"
           arc(worldWidth * .75f, worldHeight * (.3f + .45f / 2), worldHeight * .175f, 85f, 190f, ROUNDING_SEGMENTS)
         }
 
-        D -> {}
-        F -> {}
+        D -> {
+          color = RANK_D_COLOR
+
+          val leftBorder = worldWidth * .6f
+          val rightBorder = worldWidth * .85f
+          val bottomBorder = worldHeight * .3f
+          val topBorder = worldHeight * .75f
+          rect(leftBorder, bottomBorder, worldWidth * .05f, worldHeight * .45f)
+          rect(leftBorder, worldHeight * .675f, worldWidth * .15f, worldHeight * .075f)
+          rect(leftBorder, bottomBorder, worldWidth * .15f, worldHeight * .075f)
+          arc(
+            rightBorder - worldHeight * (.45f / 2f),
+            worldHeight * (.3f + .45f / 2f),
+            worldHeight * (.45f / 2f),
+            270f,
+            180f,
+            ROUNDING_SEGMENTS
+          )
+          color = UI_ELEMENT_BG_COLOR
+          arc(
+            rightBorder - worldHeight * (.45f / 2f),
+            worldHeight * (.3f + .45f / 2f),
+            worldHeight * .15f,
+            270f,
+            180f,
+            ROUNDING_SEGMENTS
+          )
+        }
+
+        F -> {
+          color = RANK_F_COLOR
+
+          val leftBorder = worldWidth * .6f
+          val rightBorder = worldWidth * .85f
+          val bottomBorder = worldHeight * .3f
+          val topBorder = worldHeight * .75f
+
+          rect(leftBorder, bottomBorder, worldWidth * .05f, worldHeight * .45f)
+          rect(leftBorder, worldHeight * .675f, worldWidth * .25f, worldHeight * .075f)
+          rect(leftBorder, worldHeight * .5f, worldWidth * .2f, worldHeight * .075f)
+        }
       }
     }
 
