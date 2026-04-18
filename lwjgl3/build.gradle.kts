@@ -1,5 +1,3 @@
-@file:Suppress("UnusedImport")
-
 import io.github.fourlastor.construo.Target
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile

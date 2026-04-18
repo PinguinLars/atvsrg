@@ -204,10 +204,7 @@ class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression"
         }
 
         B -> {
-          val leftBorder = worldWidth * .6f
-          val rightBorder = worldWidth * .85f
           val bottomBorder = worldHeight * .3f
-          val topBorder = worldHeight * .75f
 
           color = RANK_B_COLOR
           rect(worldWidth * .625f, bottomBorder, worldWidth * .025f, worldHeight * .45f)
@@ -248,11 +245,6 @@ class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression"
         }
 
         C -> {
-          val leftBorder = worldWidth * .6f
-          val rightBorder = worldWidth * .85f
-          val bottomBorder = worldHeight * .3f
-          val topBorder = worldHeight * .75f
-
           color = RANK_C_COLOR
           arc(worldWidth * .75f, worldHeight * (.3f + .45f / 2), worldHeight * (.45f / 2), 85f, 190f, ROUNDING_SEGMENTS)
           color = UI_ELEMENT_BG_COLOR
@@ -265,7 +257,7 @@ class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression"
           val leftBorder = worldWidth * .6f
           val rightBorder = worldWidth * .85f
           val bottomBorder = worldHeight * .3f
-          val topBorder = worldHeight * .75f
+
           rect(leftBorder, bottomBorder, worldWidth * .05f, worldHeight * .45f)
           rect(leftBorder, worldHeight * .675f, worldWidth * .15f, worldHeight * .075f)
           rect(leftBorder, bottomBorder, worldWidth * .15f, worldHeight * .075f)
@@ -292,9 +284,7 @@ class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression"
           color = RANK_F_COLOR
 
           val leftBorder = worldWidth * .6f
-          val rightBorder = worldWidth * .85f
           val bottomBorder = worldHeight * .3f
-          val topBorder = worldHeight * .75f
 
           rect(leftBorder, bottomBorder, worldWidth * .05f, worldHeight * .45f)
           rect(leftBorder, worldHeight * .675f, worldWidth * .25f, worldHeight * .075f)
