@@ -12,7 +12,7 @@ import me.ashypinguin.atvsrg.utils.*
 
 private val log = logger<EndScreen>()
 
-class EndScreen(game: Atvsrg, @Suppress("CanBeParameter", "RedundantSuppression") private val status: BeatMapStatus) :
+class EndScreen(game: Atvsrg, private val status: BeatMapStatus) :
   AbstractScreen(game) {
   var rank = status.rank
   override fun render(delta: Float) {
