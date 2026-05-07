@@ -14,7 +14,6 @@ private val log = logger<EndScreen>()
 
 class EndScreen(game: Atvsrg, private val status: BeatMapStatus) :
   AbstractScreen(game) {
-  var rank = status.rank
   override fun render(delta: Float) {
     clear()
     game.viewport.apply()
@@ -40,7 +39,7 @@ class EndScreen(game: Atvsrg, private val status: BeatMapStatus) :
       //rank letter
       rect(worldWidth * .5f, worldHeight * .2f, worldWidth * .45f, worldHeight * .65f)
 
-      when (rank) {
+      when (status.rank) {
         SS -> {
           color = RANK_SS_COLOR
 
@@ -278,21 +277,8 @@ class EndScreen(game: Atvsrg, private val status: BeatMapStatus) :
       }
     }
 
-    //debug
-    if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-      rank = when (rank) {
-        SS -> S
-        S -> A
-        A -> B
-        B -> C
-        C -> D
-        D -> F
-        F -> SS
-      }
-      log.debug { "rank = $rank" }
-    }
-
     if (Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+      log.debug { "Switching to main menu screen" }
       game.addScreen(MainMenuScreen(game))
       game.setScreen<MainMenuScreen>()
       game.removeScreen<EndScreen>()
