@@ -168,8 +168,11 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
           if (judgement != null && judgement != MISS) combo++
           else if (judgement == MISS) combo = 0
 
-          //SAFETY: all the values have been initialized
-          if (judgement != null) judgmentAmount[judgement] = judgmentAmount[judgement]!! + 1
+          if (judgement != null) {
+            //SAFETY: all the values have been initialized
+            judgmentAmount[judgement] = judgmentAmount[judgement]!! + 1
+            log.debug { "Added $judgement to the stack. Current stack status: $judgmentAmount" }
+          }
 
           note.hit = true
 
@@ -207,6 +210,9 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
         if (!note.hit) {
           lastJudgementTime = JUDGEMENT_SHOW_TIME
           lastJudgement = MISS
+          //SAFETY: all the values have been initialized
+          judgmentAmount[MISS] = judgmentAmount[MISS]!! + 1
+          log.debug { "Added $MISS to the stack. Current stack status: $judgmentAmount" }
         }
       }
     }
@@ -302,7 +308,6 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       )
     ) {
       map.song.stop()
-      print(judgmentAmount)
       game.addScreen(EndScreen(game, BeatMapStatus.Passed(score, BeatMapRank.SS, highestCombo, judgmentAmount)))
       game.setScreen<EndScreen>()
       game.removeScreen<GameScreen>()

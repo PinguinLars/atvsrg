@@ -36,3 +36,12 @@ fun tripleNote(beat: Int, pos1: Pos, pos2: Pos, pos3: Pos): Notes {
   if (!(pos1 != pos2 && pos2 != pos3 && pos1 != pos3)) throw IllegalArgumentException("pos1 ($pos1), pos2 ($pos2) and pos3($pos3) cannot be equal to another")
   return arrayOf(Note(pos1, beat), Note(pos2, beat), Note(pos3, beat))
 }
+
+fun rippleNotes(startBeat: Int) = arrayOf(
+  Note(LEFT_COLUMN, startBeat),
+  Note(LEFT_MID_COLUMN, startBeat + 1),
+  Note(RIGHT_MID_COLUMN, startBeat + 2),
+  Note(RIGHT_COLUMN, startBeat + 3),
+  Note(RIGHT_MID_COLUMN, startBeat + 4),
+  Note(LEFT_MID_COLUMN, startBeat + 5),
+)
