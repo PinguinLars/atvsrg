@@ -18,6 +18,11 @@ data class KeyStates(val left: Boolean, val leftMid: Boolean, val rightMid: Bool
   }
 }
 
+data class KeyStatesTime(
+  var leftTime: Float, var leftMidTime: Float, var rightMidTime: Float, var rightTime: Float,
+  var left: Boolean, var leftMid: Boolean, var rightMid: Boolean, var right: Boolean
+)
+
 fun ShapeRenderer.key(
   color: Color,
   offset: Int,

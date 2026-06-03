@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Align
 import me.ashypinguin.atvsrg.utils.UI_ELEMENT_BG_COLOR
 
 private const val SCORE_WIDTH_PERCENT = .125f
-private const val SCORE_HEIGHT_PERCENT = .075f
+const val SCORE_HEIGHT_PERCENT = .075f
 private const val SCORE_OFFSET_WALL_PERCENT = 0f
 private const val SCORE_OFFSET_GROUND_PERCENT = 1f - SCORE_HEIGHT_PERCENT
 

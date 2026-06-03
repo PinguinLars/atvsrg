@@ -5,16 +5,17 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.utils.I18NBundle
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxGame
 import ktx.assets.toInternalFile
 import ktx.async.KtxAsync
+import ktx.scene2d.Scene2DSkin
 import me.ashypinguin.atvsrg.screens.AbstractScreen
 import me.ashypinguin.atvsrg.screens.MainMenuScreen
 import me.ashypinguin.atvsrg.utils.logger
 import me.ashypinguin.atvsrg.utils.toLogLevel
-import java.util.*
 
 private val log = logger<Atvsrg>()
 
@@ -26,7 +27,7 @@ private val log = logger<Atvsrg>()
 class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
 
   /** Translations */
-  val i18n by lazy { I18NBundle.createBundle("i18n/nls".toInternalFile(), Locale.of("nl", "NL")) }
+  val i18n by lazy { I18NBundle.createBundle("i18n/nls".toInternalFile(), /*Locale.of("nl", "NL")*/)!! }
 
   /** Shared sprite batch */
   val batch by lazy { SpriteBatch() }
@@ -76,6 +77,8 @@ class Atvsrg(val logLevel: Int) : KtxGame<AbstractScreen>() {
     log.info { "The log level is ${logLevel.toLogLevel()}" }
 
     KtxAsync.initiate()
+
+    Scene2DSkin.defaultSkin = Skin()
 
     addScreen(MainMenuScreen(this))
     setScreen<MainMenuScreen>()

@@ -41,3 +41,6 @@ const val RANK_S_LEFT_BORDER_PERCENT = .7f
 const val RANK_S_PADDING = (.45f - .125f) * .5f
 
 const val GRAY_BG_TONE = .3f
+
+const val JUDGEMENT_SHOW_TIME = .4f
+const val DEBOUNCE_TIME = .1f

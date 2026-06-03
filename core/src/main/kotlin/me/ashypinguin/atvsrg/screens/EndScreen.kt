@@ -1,19 +1,25 @@
+@file:Suppress("DuplicatedCode") //I can't be bothered to fix it :p
+
 package me.ashypinguin.atvsrg.screens
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType.Filled
+import com.badlogic.gdx.utils.Align
 import me.ashypinguin.atvsrg.Atvsrg
 import me.ashypinguin.atvsrg.components.clear
 import me.ashypinguin.atvsrg.components.drawableArea
 import me.ashypinguin.atvsrg.maps.BeatMapRank.*
 import me.ashypinguin.atvsrg.maps.BeatMapStatus
+import me.ashypinguin.atvsrg.maps.NoteJudgement.*
 import me.ashypinguin.atvsrg.utils.*
 
 private val log = logger<EndScreen>()
 
 class EndScreen(game: Atvsrg, private val status: BeatMapStatus) :
   AbstractScreen(game) {
+
   override fun render(delta: Float) {
     clear()
     game.viewport.apply()
@@ -38,6 +44,28 @@ class EndScreen(game: Atvsrg, private val status: BeatMapStatus) :
 
       //rank letter
       rect(worldWidth * .5f, worldHeight * .2f, worldWidth * .45f, worldHeight * .65f)
+
+      color = UI_ELEMENT_FG_COLOR
+      val widthPercent = (.4f - (.04f * 3f)) / 2f
+      val heightPercent = (.525f - (.04f * 4f)) / 3f
+      for (i in 0..5) {
+        color = when (i) {
+          4 -> Color.BLUE
+          5 -> RANK_S_COLOR
+          2 -> RANK_A_COLOR
+          3 -> RANK_B_COLOR
+          0 -> RANK_C_COLOR
+          1 -> RANK_D_COLOR
+          else -> throw IllegalStateException("I can't be anything other then 0..5")
+        }
+
+        rect(
+          worldWidth * (.05f + (widthPercent + .04f) * (i % 2).toFloat()),
+          worldHeight * (.24f + (heightPercent + .04f) * (i / 2).toFloat()),
+          worldWidth * widthPercent,
+          worldHeight * heightPercent
+        )
+      }
 
       when (status.rank) {
         SS -> {
@@ -274,6 +302,41 @@ class EndScreen(game: Atvsrg, private val status: BeatMapStatus) :
           rect(leftBorder, worldHeight * .675f, worldWidth * .25f, worldHeight * .075f)
           rect(leftBorder, worldHeight * .5f, worldWidth * .2f, worldHeight * .075f)
         }
+      }
+    }
+
+    game.withBatch {
+      it.bigFont.draw(
+        this,
+        " Score: ${status.score}",
+        worldWidth * .01f, worldHeight * .825f,
+        worldWidth * .4f,
+        Align.topLeft,
+        false,
+      )
+
+      val widthPercent = (.4f - (.04f * 3f)) / 2f
+      val heightPercent = (.525f - (.04f * 4f)) / 3f
+      for (i in 0..5) {
+        val judgment = when (i) {
+          4 -> PERFECT
+          5 -> GREAT
+          2 -> GOOD
+          3 -> OK
+          0 -> MEH
+          1 -> MISS
+          else -> throw IllegalStateException("I can't be anything other then 0..5")
+        }
+
+        it.bigFont.draw(
+          this,
+          "${status.judgementAmount[judgment]!!}",
+          worldWidth * (.07f + (widthPercent + .04f) * (i % 2).toFloat()),
+          worldHeight * (.32f + (heightPercent + .04f) * (i / 2).toFloat()),
+          heightPercent,
+          Align.topLeft,
+          false,
+        )
       }
     }
 

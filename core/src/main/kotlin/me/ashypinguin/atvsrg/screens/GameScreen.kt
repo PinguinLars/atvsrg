@@ -2,20 +2,32 @@ package me.ashypinguin.atvsrg.screens
 
 import com.badlogic.gdx.Gdx.input
 import com.badlogic.gdx.Input.Keys
+import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
+import com.badlogic.gdx.utils.Align
+import ktx.assets.toInternalFile
 import me.ashypinguin.atvsrg.Atvsrg
 import me.ashypinguin.atvsrg.components.*
-import me.ashypinguin.atvsrg.maps.BeatMap
-import me.ashypinguin.atvsrg.maps.BeatMapNote
+import me.ashypinguin.atvsrg.maps.*
 import me.ashypinguin.atvsrg.maps.BeatMapNotePosition.*
-import me.ashypinguin.atvsrg.maps.BeatMapRank
-import me.ashypinguin.atvsrg.maps.BeatMapStatus
+import me.ashypinguin.atvsrg.maps.NoteJudgement.*
+import me.ashypinguin.atvsrg.maps.NoteJudgement.Companion.toJudgement
 import me.ashypinguin.atvsrg.utils.*
+import kotlin.math.abs
 import ktx.app.clearScreen as clear
 
 private val log = logger<GameScreen>()
 
 class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
+  private lateinit var judgmentFont: BitmapFont
+
+  private val bpm = map.bpm.toFloat()
+
+  @Suppress("unused") //TODO: implement this
+  private val noteAmount = map.notes.size
+
   /** The time since that the fps last got updated in seconds */
   private var timeSinceLastFpsUpdate = 1f
   private var fps = 0
@@ -26,7 +38,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   private var score = 0
 
   /** Handy internal variable to get beats */
-  private val beat get() = timeSinceStart * (map.bpm / 60f)
+  private val beat get() = timeSinceStart * (bpm / 60f)
   private var timeSinceStart = -2.5f
 
   private var shownNotes = mutableListOf<BeatMapNote>()
@@ -43,6 +55,29 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   private var fpsY = worldHeight * FPS_OFFSET_GROUND_PERCENT
   private var fpsWidth = worldWidth * FPS_WIDTH_PERCENT
   private var fpsHeight = worldHeight * FPS_HEIGHT_PERCENT
+  private var lastJudgement: NoteJudgement? = null
+  private var lastJudgementTime = 0f
+  private var highestCombo = 0
+  private var judgmentAmount = mutableMapOf(
+    Pair(PERFECT, 0),
+    Pair(GREAT, 0),
+    Pair(GOOD, 0),
+    Pair(MEH, 0),
+    Pair(OK, 0),
+    Pair(MISS, 0)
+  )
+
+  private var combo = 0
+    set(value) { //this makes it easier to update the combo and not forgot to up the highestCombo
+      field = value
+      if (field >= highestCombo) highestCombo = field
+    }
+
+  @Suppress("BooleanLiteralArgument")//because apprently this is an issue
+  private var hitRegistered = KeyStatesTime(
+    0f, 0f, 0f, 0f,
+    false, false, false, false
+  )
 
   override fun show() {
     //init music
@@ -58,6 +93,20 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
 
     //make sure notes are sorted
     map.sortNotes()
+
+    //init font
+    log.info { "Loading font: Roboto-Regular.ttf with size 24" }
+    val generator = FreeTypeFontGenerator("Roboto-Regular.ttf".toInternalFile())
+    val parameter = FreeTypeFontGenerator.FreeTypeFontParameter().apply {
+      size = 24
+      borderWidth = 1f
+      color = Color.WHITE
+    }
+    val font = generator.generateFont(parameter)
+    generator.dispose()
+    log.debug { "Font loaded" }
+    // Roboto-Regular.ttf should exist
+    judgmentFont = font!!
   }
 
   override fun render(delta: Float) {
@@ -76,19 +125,90 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     timeSinceStart += delta
 
     val keyStates = KeyStates(
+      input.isKeyJustPressed(Keys.D),
+      input.isKeyJustPressed(Keys.F),
+      input.isKeyJustPressed(Keys.J),
+      input.isKeyJustPressed(Keys.K)
+    )
+
+    val cosmeticKeyStates = KeyStates(
       input.isKeyPressed(Keys.D),
       input.isKeyPressed(Keys.F),
       input.isKeyPressed(Keys.J),
       input.isKeyPressed(Keys.K)
     )
 
+    lastJudgementTime -= delta
+    hitRegistered.leftTime -= delta
+    hitRegistered.leftMidTime -= delta
+    hitRegistered.rightMidTime -= delta
+    hitRegistered.rightTime -= delta
+    if (lastJudgement != null && lastJudgementTime < 0f) lastJudgement = null
+    if (hitRegistered.left && hitRegistered.leftTime < 0f) hitRegistered.left = false
+    if (hitRegistered.leftMid && hitRegistered.leftMidTime < 0f) hitRegistered.leftMid = false
+    if (hitRegistered.rightMid && hitRegistered.rightMidTime < 0f) hitRegistered.rightMid = false
+    if (hitRegistered.right && hitRegistered.rightTime < 0f) hitRegistered.right = false
+
     // Get all notes
     shownNotes.clear()
     for (i in lastValidIndex..<map.notes.size) {
       val note = map.notes[i]
+      if (note.hit) continue
+      if (beat <= note.beat + MISS_MAX_OFFSET_SEC * bpm / 60 && beat >= note.beat - MISS_MAX_OFFSET_SEC * bpm / 60) {
+        if ((note.pos == LEFT_COLUMN && keyStates.left && !hitRegistered.left) ||
+          (note.pos == LEFT_MID_COLUMN && keyStates.leftMid && !hitRegistered.leftMid) ||
+          (note.pos == RIGHT_MID_COLUMN && keyStates.rightMid && !hitRegistered.rightMid) ||
+          (note.pos == RIGHT_COLUMN && keyStates.right && !hitRegistered.right)
+        ) {
+          log.debug { "note hit window for $note, delta beat: ${note.beat - beat}" }
+          //this takes the delta
+          val judgement = (abs(note.beat - beat) / bpm * 60).toJudgement()
+          lastJudgementTime = JUDGEMENT_SHOW_TIME
+          lastJudgement = judgement
+          if (judgement != null && judgement != MISS) combo++
+          else if (judgement == MISS) combo = 0
+
+          //SAFETY: all the values have been initialized
+          if (judgement != null) judgmentAmount[judgement] = judgmentAmount[judgement]!! + 1
+
+          note.hit = true
+
+          @Suppress("KotlinConstantConditions", "RedundantSuppression")
+          when (note.pos) {
+            LEFT_COLUMN if keyStates.left -> {
+              hitRegistered.left = true
+              hitRegistered.leftTime = DEBOUNCE_TIME
+            }
+
+            LEFT_MID_COLUMN if keyStates.leftMid -> {
+              hitRegistered.leftMid = true
+              hitRegistered.leftMidTime = DEBOUNCE_TIME
+            }
+
+            RIGHT_MID_COLUMN if keyStates.rightMid -> {
+              hitRegistered.rightMid = true
+              hitRegistered.rightMidTime = DEBOUNCE_TIME
+            }
+
+            RIGHT_COLUMN if keyStates.right -> {
+              hitRegistered.right = true
+              hitRegistered.rightTime = DEBOUNCE_TIME
+            }
+
+            else -> throw IllegalStateException()
+          }
+        }
+      }
       if (note.beat > beat + BEAT_SCROLL_SPEED) break
-      else if (note.beat >= beat) shownNotes.add(note)
-      else lastValidIndex = i + 1
+      else if (note.beat >= beat - 1) {
+        if (!note.hit) shownNotes.add(note)
+      } else {
+        lastValidIndex = i + 1
+        if (!note.hit) {
+          lastJudgementTime = JUDGEMENT_SHOW_TIME
+          lastJudgement = MISS
+        }
+      }
     }
 
     game.withRenderer(ShapeRenderer.ShapeType.Filled) {
@@ -96,7 +216,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
       columns(noteWidth, worldHeight, noteWallOffset)
 
       //Inactive keys
-      keyStates.forEachIndexed { i, pressed ->
+      cosmeticKeyStates.forEachIndexed { i, pressed ->
         if (pressed) return@forEachIndexed
         key(i.offsetToUnpressedColor(), i, noteWallOffset, noteWidth, noteHeight)
       }
@@ -149,7 +269,7 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
         worldHeight * (1f - ((beat + RHYTHM_BAR_OFFSET) % BEAT_SCROLL_SPEED / BEAT_SCROLL_SPEED))
       )
 
-      keyStates.forEachIndexed { i, pressed ->
+      cosmeticKeyStates.forEachIndexed { i, pressed ->
         if (!pressed) return@forEachIndexed
         key(i.offsetToColor(), i, noteWallOffset, noteWidth, noteHeight)
       }
@@ -159,14 +279,31 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
     }
 
     game.withBatch {
-      it.smallFont.draw(this, "beats: ${beat.toInt()}", 0f, worldHeight * .9f)
       fpsCounter(fps, it.smallFont, fpsX, fpsY + fpsHeight * .75f, fpsWidth)
+      it.smallFont.draw(this, "combo: $combo", 0f, worldHeight * .9f)
       scoreCounter(score, it.smallFont, worldWidth, worldHeight)
+
+      if (lastJudgement != null) {
+        judgmentFont.color = lastJudgement!!.toColor()
+        judgmentFont.draw(
+          this,
+          lastJudgement!!.toString(),
+          worldWidth * (NOTE_WALL_OFFSET_PERCENT + NOTE_WIDTH_PERCENT * .5f),
+          worldHeight * .75f,
+          worldWidth * (NOTE_WIDTH_PERCENT * 3),
+          Align.center,
+          false
+        )
+      }
     }
 
-    if (timeSinceStart > map.length || map.song.position > map.length || !map.song.isPlaying || input.isKeyPressed(Keys.Q)) {
+    if (timeSinceStart > map.length || map.song.position > map.length || !map.song.isPlaying || input.isKeyPressed(
+        Keys.Q
+      )
+    ) {
       map.song.stop()
-      game.addScreen(EndScreen(game, BeatMapStatus.Passed(score, BeatMapRank.B)))
+      print(judgmentAmount)
+      game.addScreen(EndScreen(game, BeatMapStatus.Passed(score, BeatMapRank.SS, highestCombo, judgmentAmount)))
       game.setScreen<EndScreen>()
       game.removeScreen<GameScreen>()
     }
