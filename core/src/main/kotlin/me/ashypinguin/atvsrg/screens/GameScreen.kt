@@ -16,9 +16,11 @@ import me.ashypinguin.atvsrg.maps.NoteJudgement.*
 import me.ashypinguin.atvsrg.maps.NoteJudgement.Companion.toJudgement
 import me.ashypinguin.atvsrg.utils.*
 import kotlin.math.abs
+import kotlin.math.sqrt
 import ktx.app.clearScreen as clear
 
 private val log = logger<GameScreen>()
+private const val MAX_SCORE = 1_000_000
 
 class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
   private lateinit var judgmentFont: BitmapFont
@@ -35,7 +37,11 @@ class GameScreen(game: Atvsrg, val map: BeatMap) : AbstractScreen(game) {
 
   @Suppress("unused") //TODO: implement this
   private var acc = 1f
-  private var score = 0
+//  private val score get() = 0
+  private var hitBonusValue = 0
+  private var bonus = 0f
+  private val score: Int get() = ((MAX_SCORE * 0.5 / noteAmount) * (hitBonusValue * sqrt(bonus) / 320)).toInt()
+  private val scorePerfect = MAX_SCORE / noteAmount
 
   /** Handy internal variable to get beats */
   private val beat get() = timeSinceStart * (bpm / 60f)
